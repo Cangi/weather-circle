@@ -63,16 +63,24 @@ void loop() {
 
   if(vertical > 650) verdict = "U2";
   if(vertical < 350) verdict = "D2";
-  if(horizontal > 650) verdict = "L2";
+  if(horizontal > 650) 
+    if(vertical>650) verdict = "U2";
+      else if(vertical < 350) verdict = "D2";
   if(horizontal < 350) verdict = "R2";
-  //if(select == LOW) verdict = "S2";
+    if(vertical>650) verdict = "U2";
+      else if(vertical < 350) verdict = "D2";
+
   Serial.println(verdict);
 
   if(vertical2 > 650) verdict2 = "U1";
   if(vertical2 < 350) verdict2 = "D1";
-  if(horizontal2 > 650) verdict2 = "L1";
+  if(horizontal2 > 650) 
+    if(vertical2>650) verdict2 = "U1";
+      else if(vertical2 < 350) verdict2 = "D1";
   if(horizontal2 < 350) verdict2 = "R1";
- // if(select2 == LOW) verdict2 = "S2";
+    if(vertical2>650) verdict2 = "U1";
+      else if(vertical2 < 350) verdict2 = "D1";
+      
   Serial.println(verdict2);
 
   Serial.println(balaur);
