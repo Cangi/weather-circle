@@ -61,17 +61,17 @@ void loop() {
   horizontal2 = analogRead(HOR2);
   //select2 = analogRead(SEL2);
 
-  if(vertical > 650) verdict = "U";
-  if(vertical < 350) verdict = "D";
-  if(horizontal > 650) verdict = "L";
-  if(horizontal < 350) verdict = "R";
-  //if(select == LOW) verdict = "S";
+  if(vertical > 650) verdict = "U2";
+  if(vertical < 350) verdict = "D2";
+  if(horizontal > 650) verdict = "L2";
+  if(horizontal < 350) verdict = "R2";
+  //if(select == LOW) verdict = "S2";
   Serial.println(verdict);
 
-  if(vertical2 > 650) verdict2 = "U2";
-  if(vertical2 < 350) verdict2 = "D2";
-  if(horizontal2 > 650) verdict2 = "L2";
-  if(horizontal2 < 350) verdict2 = "R2";
+  if(vertical2 > 650) verdict2 = "U1";
+  if(vertical2 < 350) verdict2 = "D1";
+  if(horizontal2 > 650) verdict2 = "L1";
+  if(horizontal2 < 350) verdict2 = "R1";
  // if(select2 == LOW) verdict2 = "S2";
   Serial.println(verdict2);
 
