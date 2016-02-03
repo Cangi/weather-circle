@@ -1,6 +1,8 @@
 import processing.serial.*;
 
 Serial myPort;
+int myPortNumber = 1; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
+
 String input;
 int screenX = 800, screenY = 600;
 final int pWidth=screenX/32, pHeight=screenY/4, bDim = screenX/32;
@@ -9,30 +11,51 @@ int p1Y=screenY/2-pHeight/2, p2Y=screenY/2-pHeight/2;
 int speed = 50;
 float ballX=screenX/2, ballY=screenY/2;
 float bDirX=1, bDirY=0;
-int bSpeed=3;
+
+int bStartSpeed=3;
+int bSpeed=bStartSpeed;
 
 float MAXBOUNCEANGLE = PI/4;
 
+int p1Score = 0, p2Score = 0;
+boolean gameStarted = false;
 void setup()
 {
+  
   size(screenX, screenY);
-  myPort = new Serial(this, Serial.list()[0], 9600);
-  background(0);
+  myPort = new Serial(this, Serial.list()[myPortNumber], 9600);
 }
 
 void repaint()
 {
   background(0);
+  
+  
+  for(int i=0; i<15; i++)
+  {
+    rect(screenX/2-bDim/6.2485f, i*screenY/14.742014742f, screenX/70, screenY/20);
+  }
+  
   rect(-1, p1Y, pWidth, pHeight); // player 1
   rect(screenX-pWidth, p2Y, pWidth, pHeight); // player 2
   ellipse(ballX,ballY,bDim, bDim); //elipse
+  
+  textSize((screenX+screenY)/20);
+  fill(255, 255, 255);
+  text(p1Score, screenX/4, screenY/7);
+  text(p2Score, 3*screenX/4-(screenX)/20, screenY/7);
+  
 }
 
 void draw()
 {  
+  if(!gameStarted) {
+    ballX=screenX/2;
+    ballY=screenY/2;
+  }
   
   /* COLLISION DETTECTION FOR PADDLE***********/ 
-  if(ballX<=pWidth && ballY>=p1Y && ballY<=p1Y+pHeight || ballX>=screenX-pWidth && ballY>=p2Y && ballY<=p2Y+pHeight) {
+  if(ballX+bSpeed<=pWidth && ballY>=p1Y && ballY<=p1Y+pHeight || ballX+bSpeed>=screenX-pWidth && ballY>=p2Y && ballY<=p2Y+pHeight) {
      
        /***********************PHYSICS****************************/ 
       float relativeIntersectY;
@@ -62,11 +85,16 @@ void draw()
   }
   if(ballX<0 || ballX>screenX) //WHEN GAME OVER
   {
+    p1Y=screenY/2-pHeight/2;
+    p2Y=screenY/2-pHeight/2;
+    if(ballX<0) p2Score++;
+    else if(ballX>screenX) p1Score++;
     ballX=screenX/2; 
-    bSpeed=3;
+    bSpeed=bStartSpeed;
     if(bDirX>0) bDirX=-1;
     else if(bDirX<0) bDirX=1;
     bDirY=0;
+    gameStarted = false;
   }
   
   
@@ -82,20 +110,29 @@ void draw()
     if(input!=null) {
       input=input.trim();
       println(input);
+      
       if(input.equals("U1"))
       {
+        gameStarted = true;
+        if(p1Y>=5)
         p1Y-=speed;
       }
       if(input.equals("D1"))
       {
+        gameStarted = true;
+        if(p1Y<=screenY-pHeight)
         p1Y+=speed;
       }
       if(input.equals("U2"))
       {
+        gameStarted = true;
+        if(p2Y>=5)
         p2Y-=speed;
       }
       if(input.equals("D2"))
       {
+        gameStarted = true;
+        if(p2Y<=screenY-pHeight)
         p2Y+=speed;
       }
     }
@@ -104,11 +141,15 @@ void draw()
 
 void keyPressed()
 {
-  
-  if(key == 'w') p1Y-=speed;
-  if(key == 's') p1Y+=speed;
-  if(key == 'i') p2Y-=speed;
-  if(key == 'k') p2Y+=speed;
+  gameStarted=true;
+  if(key == 'w') if(p1Y>=5)
+        p1Y-=speed;
+  if(key == 's') if(p1Y<=screenY-pHeight)
+        p1Y+=speed;
+  if(key == 'i') if(p2Y>=5)
+        p2Y-=speed;
+  if(key == 'k') if(p2Y<=screenY-pHeight)
+        p2Y+=speed;
 }
 
 
