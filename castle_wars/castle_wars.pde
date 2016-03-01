@@ -1,5 +1,5 @@
 final int screenX=1000, screenY=700;
-PImage background, p1Sprite, p2Sprite;
+PImage background1, background2, p1Sprite, p2Sprite, brokenp11, brokenp12, brokenp21, brokenp22;
 int p1X=200, p1Y=screenY - 260, p2X=screenX/2+200, p2Y=screenY - 260;
 int bang1X, bang1Y, bang2X, bang2Y;
 int player1Score=0, player2Score=0, player1HP=3, player2HP=3;
@@ -9,11 +9,9 @@ float[] scale1X, scale1Y, scale2X, scale2Y;
 boolean shooting1=false, shooting2=false, spawning1=true, spawning2=true;
 int newEnemyId1 = 0, newEnemyId2 = 0;
 boolean[] falling1, falling2;
-<<<<<<< HEAD
 boolean isRunning = true;
+int broken1lvl=0, broken2lvl=0;
 
-=======
->>>>>>> dbb21f020d7d02e5f93a0ea8ffedfa853a89519c
 void setup() {
   size(1000, 700);
   
@@ -21,39 +19,32 @@ void setup() {
   enemy1Y = new int[10];
   enemy2X = new int[10];
   enemy2Y = new int[10];
-<<<<<<< HEAD
   scale1X = new float[10];
   scale1Y = new float[10];
   scale2X = new float[10];
   scale2Y = new float[10];
   falling1 = new boolean[10];
   falling2 = new boolean[10];
-=======
-  
-  falling1 = new boolean[10];
-  falling2 = new boolean[10];
-  
->>>>>>> dbb21f020d7d02e5f93a0ea8ffedfa853a89519c
   for(int i=0; i<enemy1X.length; i++)
   {
     enemy1X[i]=(int)random(30, screenX/2-30);
     enemy1Y[i]=0; // change
-<<<<<<< HEAD
     enemy2X[i]=(int)random(screenX/2+30, screenX-10);
     enemy2Y[i]=0;
     scale1X[i]=10;
     scale1Y[i]=10;
     scale2X[i]=10;
     scale2Y[i]=10;
-=======
-    enemy2X[i]=(int)random(screenX/2, screenX-10);
-    enemy2Y[i]=0;
->>>>>>> dbb21f020d7d02e5f93a0ea8ffedfa853a89519c
     falling1[i]=false;
     falling2[i]=false;
   }
   
-  background = loadImage("sprites/background.jpg");
+  background1 = loadImage("sprites/background1.png");
+  background2 = loadImage("sprites/background2.png");
+  brokenp11 = loadImage("sprites/broken2.png");
+  brokenp12 = loadImage("sprites/broken22.png");
+  brokenp21 = loadImage("sprites/broken1.png");
+  brokenp22 = loadImage("sprites/broken11.png");
   p1Sprite = loadImage("sprites/player1.png");
   p2Sprite = loadImage("sprites/player2.png");
   repaint();
@@ -62,7 +53,24 @@ void repaint()
 {
   
   background(0);
-  image(background, 0, 0);
+  
+  
+  
+  if(broken1lvl==1) {
+    image(brokenp11, 0, 0);
+  } else if(broken1lvl==2) {
+    image(brokenp12, 0, 0);
+  } else {
+    image(background1, 0, 0);
+  }
+  if(broken2lvl==1) {
+    image(brokenp21, screenX/2, 0);
+  } else if(broken2lvl==2) {
+    image(brokenp22, screenX/2, 0);
+  } else {
+    image(background2, screenX/2, 0);
+  }
+  
   image(p1Sprite, p1X, p1Y);
   image(p2Sprite, p2X, p2Y);
   fill(255,255,255);
@@ -70,7 +78,6 @@ void repaint()
 }
 void draw() {
   
-<<<<<<< HEAD
   if(isRunning) {
     repaint();
     
@@ -187,78 +194,23 @@ void draw() {
         print("Player 1 shot Player 2, Player 1 WINS!");
         shootSuper1 = false;
         isRunning = false;
+        fill(255,255,255);
+        strokeWeight(5);
         rect(screenX/2-100, screenY/2-50, 200, 100);
-        text("Player 1 shot Player 2, Player 1 WINS!",5,5);
+        fill(0);
+        textSize(18);
+        text("Player 1 shot Player 2!",screenX/2-80,screenY/2+5);
       }
       if(bang2X<=p1X+20 && bang2X>=p1X-40 && bang2Y>=p1Y && bang2Y<=p1Y+50) {
         print("Player 2 shot Player 1, Player 2 WINS!");
         shootSuper2 = false;
         isRunning = false;
-        rect(screenX/2-100, screenY/2-50, 200, 100);
-        text("Player 1 shot Player 2, Player 1 WINS!",5,5);
-=======
-  repaint();
-  
-  if(spawning1) {
-    falling1[newEnemyId1] = true;
-    spawning1=false;
-  }
-  if(enemy1Y[newEnemyId1]>250) {
-    spawning1 = true;
-    for(int i=0; i<enemy1X.length; i++)
-    {
-      if(!falling1[i]) { // make sure that there's always someone spawning
-        newEnemyId1 = i;
-        break;
-      }
-    }
-  }
-  for(int i=0; i<enemy1X.length; i++)
-  {
-    if(falling1[i]) {
-      //println(enemy1Y);
-      enemy1Y[i]+=3;
-      fill(159,99,66);
-      ellipse(enemy1X[i],enemy1Y[i], 50,50);
-    }
-    
-    /* COLLISION DETECTION *********************************************************/
-    if(bang1X>=enemy1X[i]-80 && bang1X<=enemy1X[i]-20 && bang1Y>=enemy1Y[i] && bang1Y<=enemy1Y[i]+20) {
-      bang1Y=-50;
-      enemy1Y[i]=0;
-      if(i==newEnemyId1) {
-        spawning1 = true;
-        for(int j=0; j<enemy1X.length; j++)
-        {
-          if(!falling1[j]) { // make sure that there's always someone spawning
-            newEnemyId1 = j;
-            break;
-          }
-        }
-      }
-      enemy1X[i]=(int)random(30, screenX/2-30);
-      falling1[i]=false;
-    }
-    /* COLLISION DETECTION *********************************************************/
-    
-    /* CASTLE CRASH DETECTION ****************************/
-    if(enemy1Y[i]>=screenY-200) {
-      enemy1Y[i]=0;
-      enemy1X[i]=(int)random(30, screenX/2-30);
-      falling1[i]=false;
-    }
-    
-    
-  }
-  image(p1Sprite, p1X, p1Y);
-  image(p2Sprite, p2X, p2Y);
-  /* TESTING 
-  enemyY+=5;
-  fill(159,99,66);
-  ellipse(enemyX,enemyY, 50,50);*/
-  
-  
->>>>>>> dbb21f020d7d02e5f93a0ea8ffedfa853a89519c
+        fill(255,255,255);
+          strokeWeight(5);
+          rect(screenX/2-100, screenY/2-50, 200, 100);
+          fill(0);
+          textSize(18);
+          text("Player 2 shot Player 1!",screenX/2-80,screenY/2+5);
   
       }
       /* COLLISION DETECTION *********************************************************/
@@ -269,11 +221,16 @@ void draw() {
         scale1X[i]=10;
         scale1Y[i]=10;
         player1HP--;
+        broken1lvl++;
         if(player1HP==0) {
           print("player 2 WINS!!!");
           isRunning = false;
+          fill(255,255,255);
+          strokeWeight(5);
           rect(screenX/2-100, screenY/2-50, 200, 100);
-        text("player 2 WINS!!!",5,5);
+          fill(0);
+          textSize(22);
+          text("player 2 WINS!!!",screenX/2-80,screenY/2+5);
         }
         enemy1X[i]=(int)random(30, screenX/2-30);
         falling1[i]=false;
@@ -285,12 +242,16 @@ void draw() {
         scale2X[i]=10;
         scale2Y[i]=10;
         player2HP--;
+        broken2lvl++;
         if(player2HP==0) {
           print("player 1 WINS!!!");
           isRunning = false;
+          fill(255,255,255);
+          strokeWeight(5);
           rect(screenX/2-100, screenY/2-50, 200, 100);
           fill(0);
-        text("player 1 WINS!!!",screenX/2,screenY/2);
+          textSize(22);
+          text("player 1 WINS!!!",screenX/2-80,screenY/2+5);
         }
           
         enemy2X[i]=(int)random(screenX/2+30, screenX);
@@ -327,21 +288,8 @@ void draw() {
 
 void keyPressed()
 {
-<<<<<<< HEAD
   
   if(key=='v' && !shooting1 && !shootSuper1) {
-=======
-  if(key=='m') {
-    for(int i = 0; i<10; i++)
-    {
-      println(falling1[i]);
-      
-    }
-    println(spawning1);
-  }
-  
-  if(key=='v') {
->>>>>>> dbb21f020d7d02e5f93a0ea8ffedfa853a89519c
     bang1X=p1X;
     bang1Y=p1Y;
     shooting1 = true;
@@ -371,11 +319,7 @@ void keyPressed()
   if(key=='a' && p1X>0) {
     p1X-=40;
   }
-<<<<<<< HEAD
   if(key=='s' && p1Y<screenY-260) {
-=======
-  if(key=='s' && p1Y<screenY-220) {
->>>>>>> dbb21f020d7d02e5f93a0ea8ffedfa853a89519c
     p1Y+=40;
   }
   
