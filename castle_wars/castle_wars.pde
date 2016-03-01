@@ -16,7 +16,7 @@ int broken1lvl=0, broken2lvl=0;
 
 
 Serial myPort;
-int myPortNumber = 1; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
+int myPortNumber = 2; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
 
 void setup() {
   size(1000, 700);
@@ -196,7 +196,7 @@ void draw() {
         falling2[i]=false;
       }
       
-      if(bang1X<=p2X+20 && bang1X>=p2X-40 && bang1Y>=p2Y && bang1Y<=p2Y+50) {
+      /*if(bang1X<=p2X+20 && bang1X>=p2X-40 && bang1Y>=p2Y && bang1Y<=p2Y+50) {
         print("Player 1 shot Player 2, Player 1 WINS!");
         shootSuper1 = false;
         isRunning = false;
@@ -218,7 +218,7 @@ void draw() {
           textSize(18);
           text("Player 2 shot Player 1!",screenX/2-80,screenY/2+5);
   
-      }
+      }*/
       /* COLLISION DETECTION *********************************************************/
       
       /* CASTLE CRASH DETECTION ****************************/
@@ -226,7 +226,7 @@ void draw() {
         enemy1Y[i]=0;
         scale1X[i]=10;
         scale1Y[i]=10;
-        player1HP--;
+        //player1HP--;
         broken1lvl++;
         if(player1HP==0) {
           print("player 2 WINS!!!");
@@ -247,7 +247,7 @@ void draw() {
         enemy2Y[i]=0;
         scale2X[i]=10;
         scale2Y[i]=10;
-        player2HP--;
+        //player2HP--;
         broken2lvl++;
         if(player2HP==0) {
           print("player 1 WINS!!!");
@@ -294,6 +294,7 @@ void draw() {
     String input = myPort.readStringUntil('\n');
     if(input!=null) {
       input=input.trim();
+      println(input);
       if(input.equals("button11") && !shooting1 && !shootSuper1) {//PLAYER 1
         bang1X=p1X;
         bang1Y=p1Y;

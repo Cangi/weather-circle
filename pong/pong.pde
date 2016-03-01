@@ -1,14 +1,14 @@
 import processing.serial.*;
 
 Serial myPort;
-int myPortNumber = 1; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
+int myPortNumber = 2; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
 
 String input;
 int screenX = 800, screenY = 600;
 final int pWidth=screenX/32, pHeight=screenY/4, bDim = screenX/32;
 int p1Y=screenY/2-pHeight/2, p2Y=screenY/2-pHeight/2;
 
-int speed = 50;
+int speed = 17;
 float ballX=screenX/2, ballY=screenY/2;
 float bDirX=1, bDirY=0;
 
@@ -30,7 +30,7 @@ void repaint()
 {
   background(0);
   
-  
+
   for(int i=0; i<15; i++)
   {
     rect(screenX/2-bDim/6.2485f, i*screenY/14.742014742f, screenX/70, screenY/20);

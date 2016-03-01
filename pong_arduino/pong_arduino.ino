@@ -2,49 +2,21 @@
 
 
 const int VERT = 0; 
-const int HOR = 2;
-const int SEL = 7;
+const int HOR = 1;
+const int SEL = 12;
 
-const int VERT2 =  1;
-const int HOR2 = 3;
-const int SEL2 = 11;
+const int VERT2 =  5;
+const int HOR2 = 4;
+const int SEL2 = 2;
 
-const int ldr = 4;
-
-const int pot = 5;
 
 void setup() {
-  /*pinMode(SEL,INPUT_PULLUP);
-  pinMode(SEL2, INPUT_PULLUP);
-  digitalWrite(SEL,HIGH);
-  digitalWrite(SEL2,HIGH);*/
-
-  
   
   Serial.begin(9600);
 }
 
 void loop() {
 
-
-
-  int caineprost = analogRead(ldr);
-
-  if(caineprost < 250) Serial.println(caineprost);
-  if(caineprost > 700) Serial.println(caineprost);
-  int x = analogRead(pot);
-  int balaur;
-
-  if(x<100) balaur = 0;
-  else if (x<200) balaur = 2;
-    else if (x<300) balaur = 4;
-      else if (x<400) balaur = 6;
-        else if (x<500) balaur = 8;
-          else if (x<600) balaur = 10;
-            else if (x<700) balaur = 12;
-              else if (x<800) balaur = 14;
-                else if (x<900) balaur = 16;
-                  else balaur = 30;
   
   int vertical, horizontal, select;
   String verdict = "X";
@@ -82,10 +54,8 @@ void loop() {
       else if(vertical2 < 350) verdict2 = "D1";
       
   Serial.println(verdict2);
-
-  Serial.println(balaur);
   
-  delay(100);
+  delay(37);
 }
 
 
