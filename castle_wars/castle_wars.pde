@@ -1,3 +1,5 @@
+import processing.serial.*;
+
 final int screenX=1000, screenY=700;
 PImage background1, background2, p1Sprite, p2Sprite, brokenp11, brokenp12, brokenp21, brokenp22;
 int p1X=200, p1Y=screenY - 260, p2X=screenX/2+200, p2Y=screenY - 260;
@@ -12,9 +14,13 @@ boolean[] falling1, falling2;
 boolean isRunning = true;
 int broken1lvl=0, broken2lvl=0;
 
+
+Serial myPort;
+int myPortNumber = 1; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
+
 void setup() {
   size(1000, 700);
-  
+  myPort = new Serial(this, Serial.list()[myPortNumber], 9600);
   enemy1X = new int[10];
   enemy1Y = new int[10];
   enemy2X = new int[10];
@@ -283,6 +289,57 @@ void draw() {
       }
     }
   
+  }
+  if(myPort.available() > 0) {
+    String input = myPort.readStringUntil('\n');
+    if(input!=null) {
+      input=input.trim();
+      if(input.equals("button11") && !shooting1 && !shootSuper1) {//PLAYER 1
+        bang1X=p1X;
+        bang1Y=p1Y;
+        shooting1 = true;
+      }
+      if(input.equals("button12") && !shooting1 && !shootSuper1) {//PLAYER 1
+        bang1X=p1X;
+        bang1Y=p1Y+50;
+        shootSuper1 = true;
+      }
+      if(input.equals("button21") && !shooting1 && !shootSuper1) { //PLAYER 2
+        bang2X=p2X;
+        bang2Y=p2Y;
+        shooting2 = true;
+      }
+      if(input.equals("button22") && !shooting1 && !shootSuper1) { //PLAYER 2
+        bang2X=p2X;
+        bang2Y=p2Y+50;
+        shootSuper2 = true;
+      }
+      if(input.equals("up1") && p1Y>screenY/2) { //PLAYER 1
+        p1Y-=40;
+      }
+      if(input.equals("r1") && p1X<screenX/2-100) {
+        p1X+=40;
+      }
+      if(input.equals("l1") && p1X>0) {
+        p1X-=40;
+      }
+      if(input.equals("d1") && p1Y<screenY-260) {
+        p1Y+=40;
+      }
+      
+      if(input.equals("up2") && p2Y>screenY/2) {// PLAYER 2
+        p2Y-=40;
+      }
+      if(input.equals("r2") && p2X<screenX-80) {
+        p2X+=40;
+      }
+      if(input.equals("l2") && p2X>screenX/2) {
+        p2X-=40;
+      }
+      if(input.equals("d2") && p2Y<screenY-260) {
+        p2Y+=40;
+      }
+    }
   }
 }
 
