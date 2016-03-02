@@ -19,7 +19,7 @@ public class pong extends PApplet {
 
 
 Serial myPort;
-int myPortNumber = 2; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
+int myPortNumber; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
 
 String input;
 int screenX = 800, screenY = 600;
@@ -43,14 +43,22 @@ public void setup()
   
   
   boolean ok = false;
-  myPortNumber = 0;
+  myPortNumber = -1; 
   while(ok == false) {
     try {
+      print(myPortNumber + " ");
       myPort = new Serial(this, Serial.list()[myPortNumber], 9600); 
+      myPort.available();
       ok = true;
+      println(true);
     }
     catch(Exception ex) {
       myPortNumber++;
+      if(myPortNumber >= 20) { 
+        ok = true;
+        speed += 20;
+        println("no port found false");
+      }
     }
   }
   
@@ -133,9 +141,8 @@ public void draw()
   
   repaint();
   
-   try {if(myPort.available() > 0)
+  try{if(myPort.available() > 0)
   {
-    
     input = myPort.readStringUntil('\n');
     if(input!=null) {
       input=input.trim().toUpperCase();

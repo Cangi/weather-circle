@@ -1,28 +1,48 @@
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author Ioan Luca
- */
 public class Menu extends javax.swing.JFrame {
 
     private ProcessBuilder p;
     private Process running;
-    
+    private Timer timer;
+    String processnume = "";
+
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
+        initUI();
+    }
+
+    private void initUI() {
+        timer = new Timer(500, new UpdateBarListener());
+    }
+
+    private class UpdateBarListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            try {
+                if (checkProcess(processnume) == false) {
+                    activateRalule(true);
+                    timer.stop();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 
     /**
@@ -35,7 +55,6 @@ public class Menu extends javax.swing.JFrame {
     private void initComponents() {
 
         menuOption1 = new javax.swing.JButton();
-        menuOption2 = new javax.swing.JButton();
         menuOption3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -49,14 +68,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        menuOption2.setText("Option1");
-        menuOption2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuOption2ActionPerformed(evt);
-            }
-        });
-
-        menuOption3.setText("Option1");
+        menuOption3.setText("Pong");
         menuOption3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuOption3ActionPerformed(evt);
@@ -71,8 +83,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(78, 78, 78)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(menuOption3, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(menuOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(menuOption2, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(menuOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(89, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -82,33 +93,69 @@ public class Menu extends javax.swing.JFrame {
                 .addComponent(menuOption3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(menuOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(menuOption2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addGap(201, 201, 201))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuOption1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOption1ActionPerformed
-        running.destroyForcibly();
-        System.out.println("end");
+        
+        String folder = "";
+        String exe = "castle_wars.exe";
+        processnume = "javaw.exe";
+
+        // Create and start Process with ProcessBuilder.
+        p = new ProcessBuilder();
+        p.command(folder + exe);
+        try {
+            running = p.start();
+            activateRalule(false);
+            timer.start();
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_menuOption1ActionPerformed
 
-    private void menuOption2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOption2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuOption2ActionPerformed
+    private boolean checkProcess(String processname) throws IOException {
+        String line;
+        String pidInfo = "";
+
+        Process p = null;
+        try {
+            p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+        while ((line = input.readLine()) != null) {
+            pidInfo += line;
+        }
+
+        input.close();
+
+        if (pidInfo.contains(processname)) {
+            return true;
+        }
+        return false;
+    }
+
 
     private void menuOption3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOption3ActionPerformed
         
-	String folder = "";
-	String exe = "pong.exe";
+        String folder = "";
+        String exe = "pong.exe";
+        processnume = "javaw.exe";
 
-	// Create and start Process with ProcessBuilder.
+        // Create and start Process with ProcessBuilder.
         p = new ProcessBuilder();
-	p.command(folder + exe);
+        p.command(folder + exe);
         try {
             running = p.start();
+            activateRalule(false);
+            timer.start();
         } catch (IOException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,9 +196,14 @@ public class Menu extends javax.swing.JFrame {
         });
     }
 
+    private void activateRalule(boolean ralule) {
+        menuOption1.setEnabled(ralule);
+        menuOption3.setEnabled(ralule);
+        this.setEnabled(ralule);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton menuOption1;
-    private javax.swing.JButton menuOption2;
     private javax.swing.JButton menuOption3;
     // End of variables declaration//GEN-END:variables
 }

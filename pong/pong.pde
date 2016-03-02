@@ -1,7 +1,7 @@
 import processing.serial.*;
 
 Serial myPort;
-int myPortNumber = 2; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
+int myPortNumber; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
 
 String input;
 int screenX = 800, screenY = 600;
@@ -25,16 +25,22 @@ void setup()
   size(800, 600);
   
   boolean ok = false;
-  myPortNumber = 0; 
+  myPortNumber = -1; 
   while(ok == false) {
     try {
-      println(myPortNumber);
+      print(myPortNumber + " ");
       myPort = new Serial(this, Serial.list()[myPortNumber], 9600); 
       myPort.available();
       ok = true;
+      println(true);
     }
     catch(Exception ex) {
       myPortNumber++;
+      if(myPortNumber >= 20) { 
+        ok = true;
+        speed += 20;
+        println("no port found false");
+      }
     }
   }
   
@@ -119,7 +125,6 @@ void draw()
   
   try{if(myPort.available() > 0)
   {
-    println("hello");
     input = myPort.readStringUntil('\n');
     if(input!=null) {
       input=input.trim().toUpperCase();
@@ -152,7 +157,6 @@ void draw()
     }
   }   }
   catch (Exception ex) {
-    println("port not available");
   }
 }
 

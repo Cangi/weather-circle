@@ -30,7 +30,6 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="menuOption3" min="-2" pref="522" max="-2" attributes="0"/>
                   <Component id="menuOption1" min="-2" pref="522" max="-2" attributes="0"/>
-                  <Component id="menuOption2" min="-2" pref="522" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="89" max="32767" attributes="0"/>
           </Group>
@@ -43,9 +42,7 @@
               <Component id="menuOption3" min="-2" pref="106" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
               <Component id="menuOption1" min="-2" pref="106" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-              <Component id="menuOption2" min="-2" pref="106" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="201" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -59,17 +56,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuOption1ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="menuOption2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Option1"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuOption2ActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="menuOption3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Option1"/>
+        <Property name="text" type="java.lang.String" value="Pong"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuOption3ActionPerformed"/>
