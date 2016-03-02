@@ -92,6 +92,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void menuOption1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOption1ActionPerformed
         running.destroyForcibly();
+        System.out.println("end");
     }//GEN-LAST:event_menuOption1ActionPerformed
 
     private void menuOption2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOption2ActionPerformed
@@ -100,8 +101,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void menuOption3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOption3ActionPerformed
         
-	String folder = "C:\\Program Files (x86)\\Mozilla Firefox\\";
-	String exe = "firefox.exe";
+	String folder = "C:\\Users\\Ioan Luca\\Desktop\\processing-3.0.2-windows64\\processing-3.0.2\\";
+	String exe = "processing.exe";
 
 	// Create and start Process with ProcessBuilder.
         p = new ProcessBuilder();
