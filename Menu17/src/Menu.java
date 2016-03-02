@@ -61,14 +61,16 @@ public class Menu extends javax.swing.JFrame {
         setTitle("Menu");
         setResizable(false);
 
-        menuOption1.setText("Option1");
+        menuOption1.setIcon(new javax.swing.ImageIcon("F:\\workspace\\team17test\\Menu17\\sprites\\player1.png")); // NOI18N
+        menuOption1.setText("Castle Wars");
         menuOption1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuOption1ActionPerformed(evt);
             }
         });
 
-        menuOption3.setText("Pong");
+        menuOption3.setIcon(new javax.swing.ImageIcon("F:\\workspace\\team17test\\Menu17\\pong.PNG")); // NOI18N
+        menuOption3.setText("   Pong");
         menuOption3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuOption3ActionPerformed(evt);
@@ -91,9 +93,9 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(160, Short.MAX_VALUE)
                 .addComponent(menuOption3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addGap(42, 42, 42)
                 .addComponent(menuOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(201, 201, 201))
+                .addGap(198, 198, 198))
         );
 
         pack();
