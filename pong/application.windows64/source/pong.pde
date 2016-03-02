@@ -25,12 +25,10 @@ void setup()
   size(800, 600);
   
   boolean ok = false;
-  myPortNumber = 0; 
+  myPortNumber = 0;
   while(ok == false) {
     try {
-      println(myPortNumber);
       myPort = new Serial(this, Serial.list()[myPortNumber], 9600); 
-      myPort.available();
       ok = true;
     }
     catch(Exception ex) {
@@ -117,9 +115,9 @@ void draw()
   
   repaint();
   
-  try{if(myPort.available() > 0)
+   try {if(myPort.available() > 0)
   {
-    println("hello");
+    
     input = myPort.readStringUntil('\n');
     if(input!=null) {
       input=input.trim().toUpperCase();
@@ -152,7 +150,6 @@ void draw()
     }
   }   }
   catch (Exception ex) {
-    println("port not available");
   }
 }
 

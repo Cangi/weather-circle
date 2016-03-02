@@ -101,8 +101,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void menuOption3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOption3ActionPerformed
         
-	String folder = "C:\\Users\\Ioan Luca\\Desktop\\processing-3.0.2-windows64\\processing-3.0.2\\";
-	String exe = "processing.exe";
+	String folder = "";
+	String exe = "pong.exe";
 
 	// Create and start Process with ProcessBuilder.
         p = new ProcessBuilder();

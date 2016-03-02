@@ -21,7 +21,13 @@ int myPortNumber = 2; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
 
 void setup() {
   size(1000, 700);
-  myPort = new Serial(this, Serial.list()[myPortNumber], 9600);
+  try {
+    myPort = new Serial(this, Serial.list()[myPortNumber], 9600);
+  }
+  catch(Exception ex) {
+    println("Wrong port");  
+  }
+  
   enemy1X = new int[10];
   enemy1Y = new int[10];
   enemy2X = new int[10];
@@ -297,6 +303,8 @@ void draw() {
     }
   
   }
+  
+  try {
   if(myPort.available() > 0) {
     String input = myPort.readStringUntil('\n');
     if(input!=null) {
@@ -352,6 +360,8 @@ void draw() {
         king2Scale+=3;
       }
     }
+  } }
+  catch(Exception ex) {
   }
 }
 
