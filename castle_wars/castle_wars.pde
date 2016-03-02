@@ -13,7 +13,8 @@ int newEnemyId1 = 0, newEnemyId2 = 0;
 boolean[] falling1, falling2;
 boolean isRunning = true;
 int broken1lvl=0, broken2lvl=0;
-
+int enemySpeed = 2, playerSpeed = 25, extraShootSpeed = 7;
+int king1Scale, king2Scale;
 
 Serial myPort;
 int myPortNumber = 2; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
@@ -53,6 +54,10 @@ void setup() {
   brokenp22 = loadImage("sprites/broken11.png");
   p1Sprite = loadImage("sprites/player1.png");
   p2Sprite = loadImage("sprites/player2.png");
+  
+  king1Scale = p1Sprite.height;
+  king2Scale = p2Sprite.height;
+  
   repaint();
 }
 void repaint()
@@ -77,7 +82,9 @@ void repaint()
     image(background2, screenX/2, 0);
   }
   
+  p1Sprite.resize(king1Scale, king1Scale);
   image(p1Sprite, p1X, p1Y);
+  p2Sprite.resize(king2Scale, king2Scale);
   image(p2Sprite, p2X, p2Y);
   fill(255,255,255);
   rect(screenX/2-10, 0, 20, screenY);
@@ -90,7 +97,7 @@ void draw() {
     if(shootSuper1) {
       fill(0);
       ellipse(bang1X+50,bang1Y, 15,15);
-      bang1X+=20;
+      bang1X+=extraShootSpeed;
       if(bang1X>screenX) {
         shootSuper1 = false;
         player1SuperAttack = false;
@@ -114,7 +121,7 @@ void draw() {
     if(shootSuper2) {
       fill(0);
       ellipse(bang2X+50,bang2Y, 15,15);
-      bang2X-=20;
+      bang2X-=extraShootSpeed;
       if(bang2X<0) {
         shootSuper2 = false;
         player2SuperAttack = false;
@@ -139,17 +146,17 @@ void draw() {
     {
       if(falling1[i]) {
         //println(enemy1Y);
-        enemy1Y[i]+=3;
-        scale1X[i]+=0.3;
-        scale1Y[i]+=0.3;
+        enemy1Y[i]+=enemySpeed;
+        scale1X[i]+=(float)enemySpeed/10;
+        scale1Y[i]+=(float)enemySpeed/10;
         fill(159,99,66);
         ellipse(enemy1X[i],enemy1Y[i], scale1X[i],scale1Y[i]);
       }
       if(falling2[i]) {
         //println(enemy1Y);
-        enemy2Y[i]+=3;
-        scale2X[i]+=0.3;
-        scale2Y[i]+=0.3;
+        enemy2Y[i]+=enemySpeed;
+        scale2X[i]+=(float)enemySpeed/10;
+        scale2Y[i]+=(float)enemySpeed/10;
         fill(159,99,66);
         ellipse(enemy2X[i],enemy2Y[i], scale2X[i],scale2Y[i]);
       }
@@ -196,7 +203,7 @@ void draw() {
         falling2[i]=false;
       }
       
-      /*if(bang1X<=p2X+20 && bang1X>=p2X-40 && bang1Y>=p2Y && bang1Y<=p2Y+50) {
+      if(bang1X<=p2X+20 && bang1X>=p2X-40 && bang1Y>=p2Y && bang1Y<=p2Y+50) {
         print("Player 1 shot Player 2, Player 1 WINS!");
         shootSuper1 = false;
         isRunning = false;
@@ -218,7 +225,7 @@ void draw() {
           textSize(18);
           text("Player 2 shot Player 1!",screenX/2-80,screenY/2+5);
   
-      }*/
+      }
       /* COLLISION DETECTION *********************************************************/
       
       /* CASTLE CRASH DETECTION ****************************/
@@ -226,7 +233,7 @@ void draw() {
         enemy1Y[i]=0;
         scale1X[i]=10;
         scale1Y[i]=10;
-        //player1HP--;
+        player1HP--;
         broken1lvl++;
         if(player1HP==0) {
           print("player 2 WINS!!!");
@@ -247,7 +254,7 @@ void draw() {
         enemy2Y[i]=0;
         scale2X[i]=10;
         scale2Y[i]=10;
-        //player2HP--;
+        player2HP--;
         broken2lvl++;
         if(player2HP==0) {
           print("player 1 WINS!!!");
@@ -300,45 +307,49 @@ void draw() {
         bang1Y=p1Y;
         shooting1 = true;
       }
-      if(input.equals("button12") && !shooting1 && !shootSuper1) {//PLAYER 1
+      if(input.equals("button12") && player1SuperAttack && !shootSuper1) {//PLAYER 1
         bang1X=p1X;
         bang1Y=p1Y+50;
         shootSuper1 = true;
       }
-      if(input.equals("button21") && !shooting1 && !shootSuper1) { //PLAYER 2
+      if(input.equals("button21") && !shooting2 && !shootSuper2) { //PLAYER 2
         bang2X=p2X;
         bang2Y=p2Y;
         shooting2 = true;
       }
-      if(input.equals("button22") && !shooting1 && !shootSuper1) { //PLAYER 2
+      if(input.equals("button22")  && player2SuperAttack && !shootSuper2) { //PLAYER 2
         bang2X=p2X;
         bang2Y=p2Y+50;
         shootSuper2 = true;
       }
-      if(input.equals("up1") && p1Y>screenY/2) { //PLAYER 1
-        p1Y-=40;
+      if(input.equals("u1") && p1Y>200) { //PLAYER 1
+        p1Y-=playerSpeed;
+        king1Scale-=3;
       }
       if(input.equals("r1") && p1X<screenX/2-100) {
-        p1X+=40;
+        p1X+=playerSpeed;
       }
       if(input.equals("l1") && p1X>0) {
-        p1X-=40;
+        p1X-=playerSpeed;
       }
       if(input.equals("d1") && p1Y<screenY-260) {
-        p1Y+=40;
+        p1Y+=playerSpeed;
+        king1Scale+=3;
       }
       
-      if(input.equals("up2") && p2Y>screenY/2) {// PLAYER 2
-        p2Y-=40;
+      if(input.equals("u2") && p2Y>200) {// PLAYER 2
+        p2Y-=playerSpeed;
+        king2Scale-=3;
       }
       if(input.equals("r2") && p2X<screenX-80) {
-        p2X+=40;
+        p2X+=playerSpeed;
       }
       if(input.equals("l2") && p2X>screenX/2) {
-        p2X-=40;
+        p2X-=playerSpeed;
       }
       if(input.equals("d2") && p2Y<screenY-260) {
-        p2Y+=40;
+        p2Y+=playerSpeed;
+        king2Scale+=3;
       }
     }
   }

@@ -8,12 +8,12 @@ int screenX = 800, screenY = 600;
 final int pWidth=screenX/32, pHeight=screenY/4, bDim = screenX/32;
 int p1Y=screenY/2-pHeight/2, p2Y=screenY/2-pHeight/2;
 
-int speed = 17;
+int speed = 27;
 float ballX=screenX/2, ballY=screenY/2;
 float bDirX=1, bDirY=0;
 
-int bStartSpeed=3;
-int bSpeed=bStartSpeed;
+float bStartSpeed=3.5f;
+float bSpeed=bStartSpeed;
 
 float MAXBOUNCEANGLE = PI/4;
 
@@ -108,7 +108,7 @@ void draw()
     
     input = myPort.readStringUntil('\n');
     if(input!=null) {
-      input=input.trim();
+      input=input.trim().toUpperCase();
       println(input);
       
       if(input.equals("U1"))

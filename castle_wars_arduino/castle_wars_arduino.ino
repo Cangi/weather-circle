@@ -16,14 +16,16 @@ const int shotPin2 = 6; // digital
 
 void setup() {
 
-  pinMode(selectPin1,INPUT_PULLUP);
-  pinMode(selectPin2,INPUT_PULLUP);
+  pinMode(selectPin1,INPUT);
+  pinMode(selectPin2,INPUT);
 
-  digitalWrite(selectPin1,HIGH);
-  digitalWrite(selectPin2,HIGH);
+  //digitalWrite(selectPin1,HIGH);
+  //digitalWrite(selectPin2,HIGH);
 
   pinMode(shotPin1,INPUT);
   pinMode(shotPin2,INPUT);
+
+ 
   
   Serial.begin(9600);
 }
@@ -81,7 +83,7 @@ void loop() {
 
   // button11
   is = 0;
-  if(select1 == LOW) {
+  if(select1 == HIGH) {
     is = 1;
   }
   if(is) { Serial.println("button11");  }
@@ -133,10 +135,10 @@ void loop() {
 
   // button21
   is = 0;
-  if(select2 == LOW) {
+  if(select2 == HIGH) {
     is = 1;
   }
-  if(is) { Serial.println("button21"); delay(300); }
+  if(is) { Serial.println("button21");  }
 
 
   // button 22
