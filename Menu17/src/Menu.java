@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.Timer;
 
 public class Menu extends javax.swing.JFrame {
@@ -212,7 +211,7 @@ public class Menu extends javax.swing.JFrame {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_menuOption3ActionPerformed
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (state == false) {
             String folder = "";
@@ -232,7 +231,7 @@ public class Menu extends javax.swing.JFrame {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            timer.stop();         
+            timer.stop();
             loading.setVisible(false);
             jButton1.setVisible(false);
             label.setVisible(false);
