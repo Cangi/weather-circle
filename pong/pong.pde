@@ -19,11 +19,8 @@ float MAXBOUNCEANGLE = PI/4;
 
 int p1Score = 0, p2Score = 0;
 boolean gameStarted = false;
-void setup()
-{
-  
-  size(800, 600);
-  
+
+void getControoler() {
   boolean ok = false;
   myPortNumber = -1; 
   while(ok == false) {
@@ -43,6 +40,16 @@ void setup()
       }
     }
   }
+}
+
+void setup()
+{
+ 
+  
+  getControoler();
+  size(800, 600);
+  
+  
   
 }
 
@@ -122,7 +129,6 @@ void draw()
   ballY=ballY+bDirY*bSpeed;
   
   repaint();
-  
   try{if(myPort.available() > 0)
   {
     input = myPort.readStringUntil('\n');
