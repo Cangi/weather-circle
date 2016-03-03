@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 public class Menu extends javax.swing.JFrame {
@@ -25,6 +26,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void initUI() {
         timer = new Timer(1000, new UpdateBarListener());
+        menuOption3.setIcon(new ImageIcon("pong.png"));
+        menuOption1.setIcon(new ImageIcon("sprites/player1.png"));
     }
 
     private class UpdateBarListener implements ActionListener {
@@ -60,7 +63,6 @@ public class Menu extends javax.swing.JFrame {
         setTitle("Menu");
         setResizable(false);
 
-        menuOption1.setIcon(new javax.swing.ImageIcon("F:\\workspace\\team17test\\Menu17\\sprites\\player1.png")); // NOI18N
         menuOption1.setText("Castle Wars");
         menuOption1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -68,7 +70,6 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
-        menuOption3.setIcon(new javax.swing.ImageIcon("F:\\workspace\\team17test\\Menu17\\pong.PNG")); // NOI18N
         menuOption3.setText("   Pong");
         menuOption3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

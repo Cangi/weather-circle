@@ -17,29 +17,24 @@ int enemySpeed = 2, playerSpeed = 25, extraShootSpeed = 7;
 int king1Scale, king2Scale;
 
 Serial myPort;
-int myPortNumber = 2; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
+
+
+void connectINO() {
+  String line = "s";
+  try {
+            BufferedReader reader = createReader("port.txt");
+            line = reader.readLine();
+            myPort = new Serial(this, line, 9600); 
+        }
+        catch(Exception ex) {
+             ex.printStackTrace();
+        }
+}
+
 
 void setup() {
+  connectINO();
   size(1000, 700);
-  boolean ok = false;
-  myPortNumber = -1; 
-  while(ok == false) {
-    try {
-      print(myPortNumber + " ");
-      myPort = new Serial(this, Serial.list()[myPortNumber], 9600); 
-      myPort.available();
-      ok = true;
-      println(true);
-    }
-    catch(Exception ex) {
-      myPortNumber++;
-      if(myPortNumber >= 20) { 
-        ok = true;
-
-        println("no port found false");
-      }
-    }
-  }
   
   enemy1X = new int[10];
   enemy1Y = new int[10];

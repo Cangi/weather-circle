@@ -1,7 +1,8 @@
 import processing.serial.*;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 Serial myPort;
-int myPortNumber; // CHANGE THIS FOR DIFFERENT PORTS FOR ARDUINO
 
 String input;
 int screenX = 800, screenY = 600;
@@ -20,41 +21,30 @@ float MAXBOUNCEANGLE = PI/4;
 int p1Score = 0, p2Score = 0;
 boolean gameStarted = false;
 
-void getControoler() {
-  boolean ok = false;
-  myPortNumber = -1; 
-  while(ok == false) {
-    try {
-      print(myPortNumber + " ");
-      myPort = new Serial(this, Serial.list()[myPortNumber], 9600); 
-      myPort.available();
-      ok = true;
-      println(true);
-    }
-    catch(Exception ex) {
-      myPortNumber++;
-      if(myPortNumber >= 20) { 
-        ok = true;
-        speed += 20;
-        println("no port found false");
-      }
-    }
-  }
+
+void connectINO() {
+  String line = "s";
+  try {
+            BufferedReader reader = createReader("port.txt");
+            line = reader.readLine();
+            myPort = new Serial(this, line, 9600); 
+        }
+        catch(Exception ex) {
+             ex.printStackTrace();
+        }
 }
+
 
 void setup()
 {
- 
-  
-  getControoler();
+  connectINO();
   size(800, 600);
-  
-  
-  
 }
 
 void repaint()
 {
+  
+  
   background(0);
   
 
@@ -129,6 +119,7 @@ void draw()
   ballY=ballY+bDirY*bSpeed;
   
   repaint();
+  
   try{if(myPort.available() > 0)
   {
     input = myPort.readStringUntil('\n');

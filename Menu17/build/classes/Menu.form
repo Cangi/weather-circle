@@ -50,9 +50,6 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="menuOption1">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="F:\workspace\team17test\Menu17\sprites\player1.png"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Castle Wars"/>
       </Properties>
       <Events>
@@ -61,9 +58,6 @@
     </Component>
     <Component class="javax.swing.JButton" name="menuOption3">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="F:\workspace\team17test\Menu17\pong.PNG"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="   Pong"/>
       </Properties>
       <Events>
