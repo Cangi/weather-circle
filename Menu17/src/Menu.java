@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.Timer;
 
 public class Menu extends javax.swing.JFrame {
@@ -14,7 +15,9 @@ public class Menu extends javax.swing.JFrame {
     private ProcessBuilder p;
     private Process running;
     private Timer timer;
+    private Timer loadingTimer;
     String processnume = "";
+    boolean state = false;
 
     /**
      * Creates new form Menu
@@ -28,6 +31,19 @@ public class Menu extends javax.swing.JFrame {
         timer = new Timer(1000, new UpdateBarListener());
         menuOption3.setIcon(new ImageIcon("pong.png"));
         menuOption1.setIcon(new ImageIcon("sprites/player1.png"));
+        menuOption1.setVisible(false);
+        menuOption3.setVisible(false);
+        loadingTimer = new Timer(300, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loading.setText(loading.getText() + "--");
+                if (loading.getText().length() >= 9) {
+                    loading.setText("");
+                }
+            }
+        });
+        loadingTimer.start();
     }
 
     private class UpdateBarListener implements ActionListener {
@@ -57,7 +73,10 @@ public class Menu extends javax.swing.JFrame {
     private void initComponents() {
 
         menuOption1 = new javax.swing.JButton();
+        label = new javax.swing.JLabel();
         menuOption3 = new javax.swing.JButton();
+        loading = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu");
@@ -70,10 +89,21 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
+        label.setText("Make sure the Arduino board is not connected.");
+
         menuOption3.setText("   Pong");
         menuOption3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuOption3ActionPerformed(evt);
+            }
+        });
+
+        loading.setText("-");
+
+        jButton1.setText("OK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -82,20 +112,40 @@ public class Menu extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(menuOption3, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(menuOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(menuOption3, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(menuOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(293, 293, 293)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(89, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(173, 173, 173))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(loading, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(309, 309, 309))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(160, Short.MAX_VALUE)
+                .addContainerGap(92, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loading, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
                 .addComponent(menuOption3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addGap(73, 73, 73)
                 .addComponent(menuOption1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(198, 198, 198))
+                .addGap(62, 62, 62))
         );
 
         pack();
@@ -162,6 +212,36 @@ public class Menu extends javax.swing.JFrame {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_menuOption3ActionPerformed
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (state == false) {
+            String folder = "";
+            String exe = "testport.exe";
+            processnume = "javaw.exe";
+
+            p = new ProcessBuilder();
+            p.command(folder + exe);
+
+            try {
+                running = p.start();
+                label.setText("                   Connect your Arduino board.");
+                timer.start();
+                state = true;
+
+            } catch (IOException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            timer.stop();         
+            loading.setVisible(false);
+            jButton1.setVisible(false);
+            label.setVisible(false);
+            menuOption1.setVisible(true);
+            menuOption3.setVisible(true);
+            timer.start();
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -205,6 +285,9 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel label;
+    private javax.swing.JLabel loading;
     private javax.swing.JButton menuOption1;
     private javax.swing.JButton menuOption3;
     // End of variables declaration//GEN-END:variables
