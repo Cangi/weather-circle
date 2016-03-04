@@ -82,11 +82,11 @@ void draw()
       float bounceAngle = normalizedRelativeIntersectionY * MAXBOUNCEANGLE;
       if(ballX>screenX/2) {
         bDirX = -bSpeed*cos(bounceAngle);
-        myPort.write('k'); // LED for player 1
+        myPort.write('o'); // LED for player 1
       }
       else {
         bDirX = bSpeed*cos(bounceAngle);
-        myPort.write('l'); // LED for player 2
+        myPort.write('p'); // LED for player 2
       }
       bDirY = bSpeed*-sin(bounceAngle);
       
