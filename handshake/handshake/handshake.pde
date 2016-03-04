@@ -6,14 +6,17 @@ boolean firstContact = false;
 
 void setup() {
   size(300,300);
-  myPort = new Serial(this,Serial.list()[0],9600);
-  myPort.bufferUntil('\n');
+  myPort = new Serial(this,"COM5",9600);
 }
 
 void draw() {
+  val = myPort.readStringUntil('\n');
+  if(val!=null) {
+    println(val.trim());
+  }
 }
 
-void serialEvent(Serial myPort) {
+/*void serialEvent(Serial myPort) {
   val = myPort.readStringUntil('\n');
   if(val!=null) {
     val = trim(val);
@@ -32,7 +35,11 @@ void serialEvent(Serial myPort) {
         myPort.write('1');
         println("1");
       }
-      myPort.write("A");
+      myPort.write("A");vvv
     }
   }
+}*/
+
+void keyPressed() {
+  if(key == 'v'){  println("l"); myPort.write("l"); }
 }
