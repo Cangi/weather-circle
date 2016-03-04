@@ -2,8 +2,8 @@
 // controller for Castle Wars
 
 // first joystick pins
-const int verticalPin1 = 5; // analog
-const int horizontalPin1 = 4; // analog
+const int verticalPin1 = 4; // analog
+const int horizontalPin1 = 5; // analog
 const int selectPin1 = 2; // digital
 const int shotPin1 = 4; // digital
 
