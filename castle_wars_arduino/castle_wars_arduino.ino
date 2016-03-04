@@ -44,17 +44,26 @@ void loop() {
   if(Serial.available() > 0) {
     val = Serial.read();
 
-    // p1 LED 
+    // p1 LED castle wars
     if(val == 'k') {
       digitalWrite(ledPin1,HIGH);
-      delay(1000);
-      digitalWrite(ledPin1,LOW);
     }
 
-    // p2 LED 
+    // p1 LED pong
+    if(val == 'o') {
+      digitalWrite(ledPin1,HIGH);
+      delay(300);
+    }
+
+    // p2 LED castle wars
     if(val == 'l') {
       digitalWrite(ledPin2,HIGH);
-      delay(1000);
+    }
+
+    // p2 LED pong
+    if(val == 'p') {
+      digitalWrite(ledPin2,HIGH);
+      delay(300);
       digitalWrite(ledPin2,LOW);
     }
 
@@ -140,6 +149,7 @@ void loop() {
   }
   if(is) {
     Serial.println("button12");
+    digitalWrite(ledPin1,LOW);
   }
   
 
@@ -193,6 +203,7 @@ void loop() {
   }
   if(is) {
     Serial.println("button22");
+    digitalWrite(ledPin2,LOW);
   }
 
   shot2 = shot1 = select2 = select2 = 0;
