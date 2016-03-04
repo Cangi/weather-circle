@@ -179,7 +179,10 @@ void draw() {
       if(bang1X>=enemy1X[i]-80 && bang1X<=enemy1X[i]-20 && bang1Y>=enemy1Y[i] && bang1Y<=enemy1Y[i]+20) {
         bang1Y=-50;
         player1Score++;
-        if(player1Score%5==0) player1SuperAttack = true;
+        if(player1Score%5==0) {
+          player1SuperAttack = true;
+          myPort.write("k"); // LED FOR PLAYER 1
+        }
         enemy1Y[i]=0;
         scale1X[i]=10;
         scale1Y[i]=10;
@@ -199,7 +202,10 @@ void draw() {
       if(bang2X>=enemy2X[i]-80 && bang2X<=enemy2X[i]-20 && bang2Y>=enemy2Y[i] && bang2Y<=enemy2Y[i]+20) {
         bang2Y=-50;
         player2Score++;
-        if(player2Score%5==0) player2SuperAttack = true;
+        if(player2Score%5==0) {
+          player2SuperAttack = true;
+          myPort.write("l"); // LED FOR PLAYER 2
+        }
         enemy2Y[i]=0;
         scale2X[i]=10;
         scale2Y[i]=10;
@@ -327,6 +333,7 @@ void draw() {
         bang1X=p1X;
         bang1Y=p1Y+50;
         shootSuper1 = true;
+        myPort.write('v'); // VIBRATOR FOR PLAYER 1
       }
       if(input.equals("button21") && !shooting2 && !shootSuper2) { //PLAYER 2
         bang2X=p2X;
@@ -337,6 +344,7 @@ void draw() {
         bang2X=p2X;
         bang2Y=p2Y+50;
         shootSuper2 = true;
+        myPort.write('b'); // VIBRATOR FOR PLAYER 2
       }
       if(input.equals("u1") && p1Y>200) { //PLAYER 1
         p1Y-=playerSpeed;

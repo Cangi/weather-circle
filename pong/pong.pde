@@ -80,9 +80,17 @@ void draw()
       else relativeIntersectY = (p1Y+(pHeight/2)) - ballY;
       float normalizedRelativeIntersectionY = (relativeIntersectY/(pHeight/2));
       float bounceAngle = normalizedRelativeIntersectionY * MAXBOUNCEANGLE;
-      if(ballX>screenX/2) bDirX = -bSpeed*cos(bounceAngle);
-      else bDirX = bSpeed*cos(bounceAngle);
+      if(ballX>screenX/2) {
+        bDirX = -bSpeed*cos(bounceAngle);
+        myPort.write('k'); // LED for player 1
+      }
+      else {
+        bDirX = bSpeed*cos(bounceAngle);
+        myPort.write('l'); // LED for player 2
+      }
       bDirY = bSpeed*-sin(bounceAngle);
+      
+      
      
   }
   /* COLLISION DETTECTION FOR TOP and BOTTOM***********/ 
@@ -95,6 +103,9 @@ void draw()
       float bounceAngle = 1 * MAXBOUNCEANGLE;
       if(bDirX>0) bDirX = bSpeed*cos(bounceAngle);
       else bDirX = -bSpeed*cos(bounceAngle);
+      
+      myPort.write('v'); // vibration for player 1
+      myPort.write('b'); // vibration for player 2
       
       if(ballY>screenY/2) bDirY = bSpeed*-sin(bounceAngle);
       else bDirY = bSpeed*sin(bounceAngle);
@@ -112,6 +123,8 @@ void draw()
     else if(bDirX<0) bDirX=1;
     bDirY=0;
     gameStarted = false;
+    myPort.write('v'); // vibration for player 1
+    myPort.write('b'); // vibration for player 2
   }
   
   
@@ -120,8 +133,9 @@ void draw()
   
   repaint();
   
-  try{if(myPort.available() > 0)
-  {
+  try {
+    if(myPort.available() > 0)
+    {
     input = myPort.readStringUntil('\n');
     if(input!=null) {
       input=input.trim().toUpperCase();
