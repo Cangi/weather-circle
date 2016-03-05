@@ -59,7 +59,6 @@ void setup() {
     falling1[i]=false;
     falling2[i]=false;
   }
-  
   background1 = loadImage("sprites/background1.png");
   background2 = loadImage("sprites/background2.png");
   brokenp11 = loadImage("sprites/broken2.png");
@@ -104,7 +103,6 @@ void repaint()
   rect(screenX/2-10, 0, 20, screenY);
 }
 void draw() {
-  
   if(isRunning) {
     repaint();
     
@@ -182,6 +180,7 @@ void draw() {
         if(player1Score%5==0) {
           player1SuperAttack = true;
           myPort.write("k"); // LED FOR PLAYER 1
+          println("k");
         }
         enemy1Y[i]=0;
         scale1X[i]=10;
@@ -253,7 +252,7 @@ void draw() {
         enemy1Y[i]=0;
         scale1X[i]=10;
         scale1Y[i]=10;
-        player1HP--;
+        //player1HP--;
         broken1lvl++;
         if(player1HP==0) {
           print("player 2 WINS!!!");
@@ -274,7 +273,7 @@ void draw() {
         enemy2Y[i]=0;
         scale2X[i]=10;
         scale2Y[i]=10;
-        player2HP--;
+        //player2HP--;
         broken2lvl++;
         if(player2HP==0) {
           print("player 1 WINS!!!");
@@ -333,7 +332,8 @@ void draw() {
         bang1X=p1X;
         bang1Y=p1Y+50;
         shootSuper1 = true;
-        myPort.write('v'); // VIBRATOR FOR PLAYER 1
+        myPort.write("v"); // VIBRATOR FOR PLAYER 1
+        println("v");
       }
       if(input.equals("button21") && !shooting2 && !shootSuper2) { //PLAYER 2
         bang2X=p2X;

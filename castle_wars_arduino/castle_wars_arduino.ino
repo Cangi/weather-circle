@@ -6,16 +6,16 @@ const int verticalPin1 = 4; // analog
 const int horizontalPin1 = 5; // analog
 const int selectPin1 = 2; // digital
 const int shotPin1 = 4; // digital
-const int ledPin1 = 13; //digital
-const int vibratorPin1 = 3; // digital
+const int ledPin1 = 12; //digital
+const int vibratorPin1 = 8; // digital
 
 // second joystick pins
 const int verticalPin2 = 0; // analog
 const int horizontalPin2 = 1; // analog
-const int selectPin2 = 12; // digital
+const int selectPin2 = 13; // digital
 const int shotPin2 = 6; // digital
 const int ledPin2 = 10; // digital 
-const int vibratorPin2 = 7; // digital
+const int vibratorPin2 = 3; // digital
 
 char val; // serial values from processing
 
@@ -30,6 +30,8 @@ void setup() {
   pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
 
+  digitalWrite(12,HIGH);
+
   pinMode(vibratorPin1, OUTPUT);
   pinMode(vibratorPin2, OUTPUT);
   
@@ -43,9 +45,10 @@ void loop() {
 
   if(Serial.available() > 0) {
     val = Serial.read();
-
+    
     // p1 LED castle wars
     if(val == 'k') {
+      Serial.println("received k");
       digitalWrite(ledPin1,HIGH);
     }
 
@@ -70,6 +73,7 @@ void loop() {
     // p1 vibrator 
     if(val == 'v') {
       digitalWrite(vibratorPin1,HIGH);
+      Serial.println("received v");
       delay(1000);
       digitalWrite(vibratorPin1,LOW);
     }  
@@ -93,7 +97,6 @@ void loop() {
   int shot1 = digitalRead(shotPin1);
   
 
-
   // reading the second joystick pins
   int vertical2 = analogRead(verticalPin2);
   int horizontal2 = analogRead(horizontalPin2);
@@ -104,25 +107,25 @@ void loop() {
   int is; // is direction good? 1 true 0 false
   
   // directions for joystick 1
-  // u1
-  is = 0;
-  if(vertical1 > 750) { 
-    is = 1;
-  } 
-  if(is) Serial.println("u1");
-
-
   // d1
   is = 0;
-  if(vertical1 < 300) { 
+  if(vertical1 > 550) { 
+    is = 1;
+  } 
+  if(is) Serial.println("d1");
+
+
+  // u1
+  is = 0;
+  if(vertical1 < 200) { 
     is = 1;
   }
-  if(is) Serial.println("d1");
+  if(is) Serial.println("u1");
 
 
   // r1
   is = 0;
-  if(horizontal1 < 300) { 
+  if(horizontal1 < 200) { 
     is = 1;
   }  
   if(is) Serial.println("r1");
@@ -130,7 +133,7 @@ void loop() {
 
   // l1
   is = 0;
-  if(horizontal1 > 750) { 
+  if(horizontal1 > 550) { 
     is = 1;
   }  
   if(is) Serial.println("l1");
@@ -154,11 +157,11 @@ void loop() {
   
 
 
-
+/*
   // directions for joystick 2
   // u2
   is = 0;
-  if(vertical2 > 750) { 
+  if(vertical2 > 550) { 
     is = 1;
   } 
   if(is) Serial.println("u2");
@@ -166,7 +169,7 @@ void loop() {
 
   // d2
   is = 0;
-  if(vertical2 < 300) { 
+  if(vertical2 < 200) { 
     is = 1;
   }
   if(is) Serial.println("d2");
@@ -174,7 +177,7 @@ void loop() {
 
   // r2
   is = 0;
-  if(horizontal2 < 300) { 
+  if(horizontal2 < 200) { 
     is = 1;
   }  
   if(is) Serial.println("r2");
@@ -182,7 +185,7 @@ void loop() {
 
   // l2
   is = 0;
-  if(horizontal2 > 750) { 
+  if(horizontal2 > 550) { 
     is = 1;
   }  
   if(is) Serial.println("l2");
@@ -204,7 +207,7 @@ void loop() {
   if(is) {
     Serial.println("button22");
     digitalWrite(ledPin2,LOW);
-  }
+  }*/
 
   shot2 = shot1 = select2 = select2 = 0;
   
