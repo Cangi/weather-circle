@@ -9,7 +9,7 @@ int screenX = 800, screenY = 600;
 final int pWidth=screenX/32, pHeight=screenY/4, bDim = screenX/32;
 int p1Y=screenY/2-pHeight/2, p2Y=screenY/2-pHeight/2;
 
-int speed = 27;
+int speed = 45;
 float ballX=screenX/2, ballY=screenY/2;
 float bDirX=1, bDirY=0;
 
@@ -104,8 +104,8 @@ void draw()
       if(bDirX>0) bDirX = bSpeed*cos(bounceAngle);
       else bDirX = -bSpeed*cos(bounceAngle);
       
-      myPort.write('v'); // vibration for player 1
-      myPort.write('b'); // vibration for player 2
+      //myPort.write('v'); // vibration for player 1  
+      //myPort.write('b'); // vibration for player 2
       
       if(ballY>screenY/2) bDirY = bSpeed*-sin(bounceAngle);
       else bDirY = bSpeed*sin(bounceAngle);

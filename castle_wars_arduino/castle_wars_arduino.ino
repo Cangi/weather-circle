@@ -6,7 +6,7 @@ const int verticalPin1 = 4; // analog
 const int horizontalPin1 = 5; // analog
 const int selectPin1 = 2; // digital
 const int shotPin1 = 6; // digital
-const int ledPin1 = 5; //digital
+const int ledPin1 = 13; //digital
 const int vibratorPin1 = 4; // digital
 
 // second joystick pins
@@ -24,16 +24,13 @@ void setup() {
   pinMode(selectPin1,INPUT);
   pinMode(selectPin2,INPUT);
 
-  //digitalWrite(selectPin1,HIGH);
-  //digitalWrite(selectPin2,HIGH);
-
   pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
 
- // digitalWrite(vibratorPin2,LOW);
-  /*digitalWrite(ledPin1,LOW);
-    digitalWrite(ledPin2,LOW); */
-      digitalWrite(vibratorPin1,HIGH);
+  digitalWrite(vibratorPin2,HIGH);
+ // digitalWrite(ledPin1,HIGH);
+   digitalWrite(ledPin2,HIGH); 
+     // digitalWrite(vibratorPin1,HIGH);
  
 
   pinMode(vibratorPin1, OUTPUT);
@@ -47,7 +44,7 @@ void setup() {
 
 void loop() {
 
-  
+  //Serial.println(analogRead(verticalPin2));
 
   if(Serial.available() > 0) {
     val = Serial.read();
@@ -62,10 +59,12 @@ void loop() {
     if(val == 'o') {
       digitalWrite(ledPin1,HIGH);
       delay(300);
+      digitalWrite(ledPin1,LOW);
     }
 
     // p2 LED castle wars
     if(val == 'l') {
+      Serial.println("received l");
       digitalWrite(ledPin2,HIGH);
     }
 
@@ -77,17 +76,17 @@ void loop() {
     }
 
     // p1 vibrator 
-    if(val == 'v') {
+    if(val == 'b') {
       digitalWrite(vibratorPin1,HIGH);
       Serial.println("received v");
-      delay(1000);
+      delay(500);
       digitalWrite(vibratorPin1,LOW);
     }  
 
     // p2 vibrator 
-    if(val == 'b') {
+    if(val == 'v') {
       digitalWrite(vibratorPin2,LOW);
-      delay(1000);
+      delay(500);
       digitalWrite(vibratorPin2,HIGH);
     }   
     
@@ -202,7 +201,7 @@ void loop() {
   if(select2 == LOW) {
     is = 1;
   }
-  if(is) { Serial.println("button22");  }
+  if(is) { Serial.println("button21");  }
 
 
   // button 22
@@ -211,7 +210,7 @@ void loop() {
     is = 1;
   }
   if(is) {
-    Serial.println("button21");
+    Serial.println("button22");
     digitalWrite(ledPin2,LOW);
   }
 
