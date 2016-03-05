@@ -12,10 +12,10 @@ const int vibratorPin1 = 8; // digital
 // second joystick pins
 const int verticalPin2 = 0; // analog
 const int horizontalPin2 = 1; // analog
-const int selectPin2 = 13; // digital
+const int selectPin2 = 3; // digital
 const int shotPin2 = 6; // digital
-const int ledPin2 = 10; // digital 
-const int vibratorPin2 = 3; // digital
+const int ledPin2 = 7; // digital 
+const int vibratorPin2 = 10; // digital
 
 char val; // serial values from processing
 
@@ -157,7 +157,7 @@ void loop() {
   
 
 
-/*
+
   // directions for joystick 2
   // u2
   is = 0;
@@ -175,39 +175,39 @@ void loop() {
   if(is) Serial.println("d2");
 
 
-  // r2
-  is = 0;
-  if(horizontal2 < 200) { 
-    is = 1;
-  }  
-  if(is) Serial.println("r2");
-
-
   // l2
   is = 0;
-  if(horizontal2 > 550) { 
+  if(horizontal2 < 200) { 
     is = 1;
   }  
   if(is) Serial.println("l2");
 
 
+  // r2
+  is = 0;
+  if(horizontal2 > 550) { 
+    is = 1;
+  }  
+  if(is) Serial.println("r2");
+
+
   // button21
   is = 0;
-  if(select2 == HIGH) {
+  if(select2 == LOW) {
     is = 1;
   }
-  if(is) { Serial.println("button21");  }
+  if(is) { Serial.println("button22");  }
 
 
   // button 22
   is = 0;
-  if(shot2 == HIGH) {
+  if(shot2 == LOW) {
     is = 1;
   }
   if(is) {
-    Serial.println("button22");
+    Serial.println("button21");
     digitalWrite(ledPin2,LOW);
-  }*/
+  }
 
   shot2 = shot1 = select2 = select2 = 0;
   
