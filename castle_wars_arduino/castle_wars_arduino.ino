@@ -6,7 +6,7 @@ const int verticalPin1 = 4; // analog
 const int horizontalPin1 = 5; // analog
 const int selectPin1 = 2; // digital
 const int shotPin1 = 6; // digital
-const int ledPin1 = 13; //digital
+const int ledPin1 = 12; //digital
 const int vibratorPin1 = 4; // digital
 
 // second joystick pins
@@ -51,8 +51,9 @@ void loop() {
     
     // p1 LED castle wars
     if(val == 'k') {
-      Serial.println("received k");
       digitalWrite(ledPin1,HIGH);
+      Serial.println("received k");
+      
     }
 
     // p1 LED pong
@@ -201,7 +202,7 @@ void loop() {
   if(select2 == LOW) {
     is = 1;
   }
-  if(is) { Serial.println("button21");  }
+  if(is) { Serial.println("button22");  }
 
 
   // button 22
@@ -210,7 +211,7 @@ void loop() {
     is = 1;
   }
   if(is) {
-    Serial.println("button22");
+    Serial.println("button21");
     digitalWrite(ledPin2,LOW);
   }
 
