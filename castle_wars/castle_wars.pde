@@ -95,10 +95,10 @@ void repaint()
     image(background2, screenX/2, 0);
   }
   
-  p1Sprite.resize(king1Scale, king1Scale);
+  /*p1Sprite.resize(king1Scale, king1Scale);
   image(p1Sprite, p1X, p1Y);
   p2Sprite.resize(king2Scale, king2Scale);
-  image(p2Sprite, p2X, p2Y);
+  image(p2Sprite, p2X, p2Y);*/
   fill(255,255,255);
   rect(screenX/2-10, 0, 20, screenY);
 }
@@ -252,7 +252,7 @@ void draw() {
         enemy1Y[i]=0;
         scale1X[i]=10;
         scale1Y[i]=10;
-        //player1HP--;
+        player1HP--;
         broken1lvl++;
         if(player1HP==0) {
           print("player 2 WINS!!!");
@@ -273,7 +273,7 @@ void draw() {
         enemy2Y[i]=0;
         scale2X[i]=10;
         scale2Y[i]=10;
-        //player2HP--;
+        player2HP--;
         broken2lvl++;
         if(player2HP==0) {
           print("player 1 WINS!!!");

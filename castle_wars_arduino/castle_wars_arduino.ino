@@ -19,6 +19,10 @@ const int vibratorPin2 = 10; // digital
 
 char val; // serial values from processing
 
+int ltv1 = 0;
+int ltv2 = 0;
+int forHowLong = 1000;
+
 void setup() {
 
   pinMode(selectPin1,INPUT);
@@ -28,11 +32,8 @@ void setup() {
   pinMode(ledPin2, OUTPUT);
 
   digitalWrite(vibratorPin2,HIGH);
- // digitalWrite(ledPin1,HIGH);
-   digitalWrite(ledPin2,HIGH); 
-     // digitalWrite(vibratorPin1,HIGH);
+  digitalWrite(ledPin2,HIGH); 
  
-
   pinMode(vibratorPin1, OUTPUT);
   pinMode(vibratorPin2, OUTPUT);
   
@@ -42,15 +43,22 @@ void setup() {
   Serial.begin(9600);
 }
 
-void loop() {
 
-  //Serial.println(analogRead(verticalPin2));
+void stopVibrating() {
+  int currentTime = millis();
+  if(currentTime - ltv1 > forHowLong){  digitalWrite(vibratorPin1,LOW); }
+  if(currentTime - ltv2 > forHowLong) { digitalWrite(vibratorPin2,HIGH); }
+}
+
+
+void loop() {
 
   if(Serial.available() > 0) {
     val = Serial.read();
     
     // p1 LED castle wars
     if(val == 'k') {
+      forHowLong = 1000;
       digitalWrite(ledPin1,HIGH);
       Serial.println("received k");
       
@@ -59,7 +67,8 @@ void loop() {
     // p1 LED pong
     if(val == 'o') {
       digitalWrite(ledPin1,HIGH);
-      delay(300);
+      forHowLong = 500;
+      delay(100);
       digitalWrite(ledPin1,LOW);
     }
 
@@ -72,29 +81,31 @@ void loop() {
     // p2 LED pong
     if(val == 'p') {
       digitalWrite(ledPin2,HIGH);
-      delay(300);
+      forHowLong = 500;
+      delay(100);
       digitalWrite(ledPin2,LOW);
     }
 
     // p1 vibrator 
     if(val == 'b') {
       digitalWrite(vibratorPin1,HIGH);
-      Serial.println("received v");
-      delay(500);
-      digitalWrite(vibratorPin1,LOW);
+      ltv1 = millis();
+      Serial.println("received b");
     }  
-
+  
     // p2 vibrator 
     if(val == 'v') {
       digitalWrite(vibratorPin2,LOW);
-      delay(500);
-      digitalWrite(vibratorPin2,HIGH);
+      ltv2 = millis();
+      Serial.println("received v");
     }   
     
   }
   
   else { 
-    
+
+  stopVibrating();
+  delay(25);
   
   // reading the first joystick pins
   int vertical1 = analogRead(verticalPin1);
