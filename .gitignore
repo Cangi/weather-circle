@@ -1,3 +1,5 @@
-/Menu17/dist/
 /Weather/build/
 /Weather/dist/
+/Weather/nbproject
+/Weather/build.xml
+/Weather/manifest.mf
