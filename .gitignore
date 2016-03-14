@@ -3,4 +3,9 @@
 /Weather/nbproject
 /Weather/build.xml
 /Weather/manifest.mf
+
+Weather/lib/secret.txt
+twitter4j/
+
+
 *.db
