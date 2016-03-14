@@ -1,6 +1,6 @@
 /Weather/build/
 /Weather/dist/
-/Weather/nbproject
+/Weather/nbproject/private
 /Weather/build.xml
 /Weather/manifest.mf
 
@@ -10,7 +10,7 @@ twitter4j/
 
 *.db
 
-/Test/nbproject/
+/Test/nbproject/private
 /Test/build/
 /Test/dist/
 /Test/build.xml
