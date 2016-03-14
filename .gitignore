@@ -3,3 +3,4 @@
 /Weather/nbproject
 /Weather/build.xml
 /Weather/manifest.mf
+*.db
