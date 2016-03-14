@@ -1,5 +1,4 @@
 
-import java.nio.channels.AsynchronousByteChannel;
 import java.util.List;
 import processing.core.PApplet;
 import twitter4j.Query;
@@ -12,14 +11,11 @@ import twitter4j.conf.ConfigurationBuilder;
 public class Weather extends PApplet {
 
     Twitter twitter;
-    String searchString = "#glenshee";
+    String searchString = "#suceava";
     List<Status> tweets;
     int currentTweet;
     String[] lines;
 
-    
-    
-    
     @Override
     public void setup() {
 
@@ -38,31 +34,29 @@ public class Weather extends PApplet {
         currentTweet = 0;
         thread("refreshTweets");
     }
-    
+
     @Override
     public void settings() {
         size(800, 800);
     }
 
-
-    
     @Override
     public void draw() {
         fill(0);
         rect(0, 0, width, height);
         currentTweet++;
-        
+
         if (currentTweet >= tweets.size()) {
             currentTweet = 0;
         }
-        
+
         Status status = tweets.get(currentTweet);
-        
+
         fill(255);
 
         String formattedData = status.getUser().getName() + " @" + status.getUser().getScreenName() + "\n" + status.getText();
         text(formattedData, width / 2 - (600 / 2), height / 2, 600, 200);
-        delay(1000);
+        delay(3500);
 
     }
 
@@ -84,5 +78,24 @@ public class Weather extends PApplet {
             getNewTweets();
             delay(3000);
         }
+    }
+
+    private void tweet() {
+        try {
+            Status status = twitter.updateStatus("The current time is: " + hour() + " " + minute() + " " + second());
+            System.out.println("twweted the time");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void printCamera() {
+        super.printCamera(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void keyPressed() {
+        //tweet();
     }
 }
