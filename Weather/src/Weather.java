@@ -90,11 +90,6 @@ public class Weather extends PApplet {
     }
 
     @Override
-    public void printCamera() {
-        super.printCamera(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void keyPressed() {
         //tweet();
     }
