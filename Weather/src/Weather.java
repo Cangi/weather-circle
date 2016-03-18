@@ -1,5 +1,7 @@
 
 import java.util.List;
+import net.aksingh.owmjapis.CurrentWeather;
+import net.aksingh.owmjapis.OpenWeatherMap;
 import processing.core.PApplet;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -82,8 +84,29 @@ public class Weather extends PApplet {
 
     private void tweet() {
         try {
-            Status status = twitter.updateStatus("The current time is: " + hour() + " " + minute() + " " + second());
-            System.out.println("twweted the time");
+            // declaring object of "OpenWeatherMap" class
+            OpenWeatherMap owm = new OpenWeatherMap("");
+
+            CurrentWeather cwd = owm.currentWeatherByCityName("London");
+
+            if (cwd.isValid()) {
+
+                if (cwd.hasCityName()) {
+
+                    System.out.println("City: " + cwd.getCityName());
+                }
+
+                if (cwd.getMainInstance().hasMaxTemperature() && cwd.getMainInstance().hasMinTemperature()) {
+
+                    System.out.println("Temperature: " + cwd.getMainInstance().getMaxTemperature()
+                            + "/" + cwd.getMainInstance().getMinTemperature() + "\'F");
+                }
+            }
+
+            /*String newStatus = "The temperature in " + currentWeather.getCityName() + "at " + hour() + ":" + minute() + ":" + second() + " is";
+             newStatus += "\n" + currentWeather.getMainInstance().getTemperature();
+             Status status = twitter.updateStatus("");
+             System.out.println("twweted the time and temp");*/
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -91,6 +114,6 @@ public class Weather extends PApplet {
 
     @Override
     public void keyPressed() {
-        //tweet();
+        tweet();
     }
 }

@@ -1,6 +1,11 @@
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import processing.core.PApplet;
 import processing.serial.*;
+import java.io.IOException;
+import net.aksingh.owmjapis.CurrentWeather;
+import net.aksingh.owmjapis.OpenWeatherMap;
 
 public class Test extends PApplet {
 
@@ -19,11 +24,35 @@ public class Test extends PApplet {
 
     @Override
     public void setup() {
-        initSerialConnection();
+        //initSerialConnection();
         colorMode(RGB, (float) 1.0);
         noStroke();
         rectMode(CENTER);
         frameRate(100);
+
+        // declaring object of "OpenWeatherMap" class
+        OpenWeatherMap owm = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, OpenWeatherMap.Language.ROMANIAN,"");
+
+        CurrentWeather cwd = null;
+        try {
+            cwd = owm.currentWeatherByCityName("Bucharest");
+        } catch (IOException ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (cwd.isValid()) {
+
+            if (cwd.hasCityName()) {
+
+                System.out.println("City: " + cwd.getCityName());
+            }
+
+            if (cwd.getMainInstance().hasMaxTemperature() && cwd.getMainInstance().hasMinTemperature()) {
+
+             System.out.println(cwd.getCoordInstance().getLatitude());
+            }
+        }
+
     }
 
     @Override
@@ -35,28 +64,10 @@ public class Test extends PApplet {
     public void draw() {
 
         background((int) 0.0);
-        update(mouseX);
         fill(mouseX / 4);
         rect(150, 320, gx * 2, gx * 2);
         fill(180 - (mouseX / 4));
         rect(450, 320, gy * 2, gy * 2);
-    }
-
-    public void update(int x) {
-        //Calculate servo postion from mouseX
-        spos = x / 4;
-
-        //Output the servo position ( from 0 to 180)
-        serialPort.write("s" + spos);
-        System.out.println("s" + spos);
-
-        // Just some graphics
-        leftColor = (float) (-0.002 * x / 2 + 0.06);
-        rightColor = (float) (0.002 * x / 2 + 0.06);
-
-        gx = x / 2;
-        gy = 100 - x / 2;
-
     }
 
     public static void main(String[] args) {
