@@ -20,9 +20,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.AsyncTask;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
-public class ledControl extends ActionBarActivity {
+import me.angrybyte.circularslider.CircularSlider;
+
+public class ledControl extends ActionBarActivity implements CircularSlider.OnSliderMovedListener {
 
     Button btnOn, btnOff, btnDis;
     SeekBar brightness;
@@ -30,6 +33,7 @@ public class ledControl extends ActionBarActivity {
     String address = null;
     private ProgressDialog progress;
     BluetoothAdapter myBluetooth = null;
+    CircularSlider cs;
     BluetoothSocket btSocket = null;
     private boolean isBtConnected = false;
     //SPP UUID. Look for it
@@ -47,16 +51,16 @@ public class ledControl extends ActionBarActivity {
         setContentView(R.layout.activity_led_control);
 
         //call the widgtes
-        btnOn = (Button)findViewById(R.id.button2);
+        /*btnOn = (Button)findViewById(R.id.button2);
         btnOff = (Button)findViewById(R.id.button3);
         btnDis = (Button)findViewById(R.id.button4);
-        brightness = (SeekBar)findViewById(R.id.seekBar);
-
-
+        brightness = (SeekBar)findViewById(R.id.seekBar);*/
+        cs = (CircularSlider) findViewById(R.id.circular);
         new ConnectBT().execute(); //Call the class to connect
 
+        cs.setOnSliderMovedListener(this);
         //commands to be sent to bluetooth
-        btnOn.setOnClickListener(new View.OnClickListener()
+        /*btnOn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -108,7 +112,7 @@ public class ledControl extends ActionBarActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
-        });
+        });*/
     }
 
     private void Disconnect()
@@ -164,7 +168,24 @@ public class ledControl extends ActionBarActivity {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onSliderMoved(double pos) {
+        if (btSocket!=null)
+        {
+            try
+            {
 
+                btSocket.getOutputStream().write(Double.toString(pos).toString().getBytes());
+                btSocket.getOutputStream().write(":".toString().getBytes());
+                Log.d("socket", "should work");
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+        else Log.d("socket", "socket null");
+    }
 
 
     private class ConnectBT extends AsyncTask<Void, Void, Void>  // UI thread

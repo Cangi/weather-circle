@@ -1,60 +1,65 @@
 char command;
 String string;
-boolean ledon = false;
+boolean ledon = false, once = false, once1=false;
 int led = 13;
+float pos, previousPos;
+int servoPos=0;
 void setup()
 {
 Serial.begin(9600);
-
+previousPos = 0;
 }
 void loop()
 {
- 
-if (Serial.available() > 0)
-{string = "";
-Serial.println("works");
-}
-while(Serial.available() > 0)
-{command = ((byte)Serial.read());
+  if (Serial.available() > 0)
+  {
+    string = "";
+    once = false;
+  }
+  while(Serial.available() > 0)
+  {
+    command = ((byte)Serial.read());
+    if(command == ':')
+    {
+    break;
+    }
+    else
+    {
+    string += command;
+    }
+    delay(1);
+  }
+  pos = string.toFloat();
+  if(!once) {
+    //if(pos<1 && pos>0) {
+      
+      //Serial.println(string);
+      //Serial.println(pos);
+      once = true;
+    //}
+  }
+  if(previousPos<pos) {
+      servoPos--;
+      previousPos=pos;
+    } else if(previousPos>pos) {
+      servoPos++;
+      previousPos=pos;
+    }
+  
+  Serial.println(servoPos);
 
-if(command == ':')
-{
-break;
 }
-else
-{
-string += command;
-}
-delay(1);
-}
-if(string == "TO")
-{
-ledOn();
-ledon = true;
-}
-if(string =="TF")
-{
-ledOff();
-ledon = false;
-Serial.println(string); //debug
-}
-if ((string.toInt()>=0)&&(string.toInt()<=255))
-{
-if (ledon==true)
-{
-analogWrite(led, string.toInt());
-Serial.println(string); //debug
-delay(10);
-}
-}
-}
+
+
+
+
 void ledOn()
 {
-Serial.println("led on");
+  Serial.println("led on");
 
 }
 void ledOff()
 {
-Serial.println("led off");
+  Serial.println("led off");
 }
 
