@@ -1,53 +1,38 @@
-
 #include <Servo.h>
+Servo servo; // Define our Servo
+int poz;
+boolean goRight = false;
 
-Servo servo1; Servo servo2; 
-
-
-void setup() {
-
-  pinMode(2,OUTPUT);
-  servo1.attach(2); //analog pin 0
-  //servo1.setMaximumPulse(2000);
-  //servo1.setMinimumPulse(700);
-
-  servo2.attach(15); //analog pin 1
-  Serial.begin(9600);
-  Serial.println("Ready");
-
+void setup()
+{
+  //servo.attach(13); // servo on digital pin 10
+  //servo.write(180);
+   poz = 180;
+   
 }
 
-void loop() {
-
-  static int v = 0;
-
-  if ( Serial.available()) {
-    char ch = Serial.read();
-
-    switch(ch) {
-      case '0'...'9':
-        v = v * 10 + ch - '0';
-        break;
-      case 's':
-        servo1.write(v);
-        v = 0;
-        break;
-      case 'w':
-        servo2.write(v);
-        v = 0;
-        break;
-      case 'd':
-        servo2.detach();
-        break;
-      case 'a':
-        servo2.attach(15);
-        break;
+void loop()
+{
+  /*if(poz < 0) { 
+    goRight = true;
     }
+    
+  if(poz > 180) {
+    goRight = false;
   }
-
-  //Servo::refresh();
-
-} 
+  
+  if(!goRight) {
+    poz-=7;
+    servo.write(poz);
+  }
+  
+  else {
+    poz+=7;
+    servo.write(poz);
+  }
+  
+   delay(50);*/
+}
 
 
 
