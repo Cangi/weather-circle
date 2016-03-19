@@ -1,7 +1,7 @@
 char command;
 String string;
 boolean ledon = false, once = false, once1=false;
-int led = 13;
+int led = 12;
 float pos, previousPos;
 int servoPos=0;
 void setup()
@@ -27,18 +27,19 @@ void loop()
     {
     string += command;
     }
-    delay(1);
+    //delay(1);
   }
   pos = string.toFloat();
   if(!once) {
-    //if(pos<1 && pos>0) {
+    if(pos<1 && pos>-1) {
       
       //Serial.println(string);
-      //Serial.println(pos);
+      Serial.println(pos);
       once = true;
-    //}
+    }
+    
   }
-  if(previousPos<pos) {
+  /*if(previousPos<pos) {
       servoPos--;
       previousPos=pos;
     } else if(previousPos>pos) {
@@ -46,7 +47,7 @@ void loop()
       previousPos=pos;
     }
   
-  Serial.println(servoPos);
+  Serial.println(servoPos);*/
 
 }
 
