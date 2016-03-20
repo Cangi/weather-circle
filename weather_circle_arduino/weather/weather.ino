@@ -4,11 +4,18 @@ boolean ledon = false, once = false, once1=false;
 int led = 12;
 float pos, previousPos;
 int servoPos=0;
+
+
+
 void setup()
 {
 Serial.begin(9600);
 previousPos = 0;
 }
+
+
+
+
 void loop()
 {
   if (Serial.available() > 0)
@@ -54,13 +61,4 @@ void loop()
 
 
 
-void ledOn()
-{
-  Serial.println("led on");
-
-}
-void ledOff()
-{
-  Serial.println("led off");
-}
 
