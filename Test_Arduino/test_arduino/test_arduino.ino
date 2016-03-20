@@ -1,66 +1,80 @@
-#include <Servo.h>
+/*#include <Servo.h>
 Servo servo; // Define our Servo
 int poz;
 boolean goRight = false;
 
 void setup()
 {
-  //servo.attach(13); // servo on digital pin 10
-  //servo.write(180);
-   poz = 180;
-   
+  servo.attach(2); // servo on digital pin 10
+  reposition();
+}
+
+void reposition() {
+  poz = servo.read();
+  while(poz > 0) {
+    poz-=5;
+    servo.write(poz);
+    delay(150);
+  }
 }
 
 void loop()
 {
-  /*if(poz < 0) { 
+  if(poz < 0) { 
     goRight = true;
+    servo.detach();
+    delay(3000);
+    servo.attach(2);
     }
     
   if(poz > 180) {
     goRight = false;
+    servo.detach();
+    delay(3000);
+    servo.attach(2);
   }
   
   if(!goRight) {
-    poz-=7;
+    poz-=1;
     servo.write(poz);
   }
   
   else {
-    poz+=7;
+    poz+=1;
     servo.write(poz);
   }
   
-   delay(50);*/
-}
+   delay(35);
+}*/
 
 
 
 
-/* #include <Stepper.h>
 
-const int stepsPerRevolution = 100;  // change this to fit the number of steps per revolution
+#include <Stepper.h>
+
+const int stepsPerRevolution = 32;  // change this to fit the number of steps per revolution
 // for your motor
 
-
 // initialize the stepper library on pins 8 through 11:
-Stepper myStepper(stepsPerRevolution, 3, 4, 5, 6);
-
-int stepCount = 0;  // number of steps the motor has taken
+Stepper myStepper(stepsPerRevolution, 4, 5, 6, 7);
 
 void setup() {
-  // nothing to do inside the setup
+  // set the speed at 60 rpm:
+  myStepper.setSpeed(700);
+  // initialize the serial port:
+  Serial.begin(9600);
 }
 
 void loop() {
-  // read the sensor value:
-  int sensorReading = 120;
-  // map it to a range from 0 to 100:
-  int motorSpeed = map(sensorReading, 0, 1023, 0, 100);
-  // set the motor speed:
-  if (motorSpeed > 0) {
-    myStepper.setSpeed(motorSpeed);
-    // step 1/100 of a revolution:
-    myStepper.step(stepsPerRevolution / 100);
-  }
-}*/
+  // step one revolution  in one direction:
+  Serial.println("clockwise");
+  myStepper.step(stepsPerRevolution*32);
+  delay(500);
+
+  // step one revolution in the other direction:
+  Serial.println("counterclockwise");
+  myStepper.step(-stepsPerRevolution*32);
+  delay(500);
+}
+
