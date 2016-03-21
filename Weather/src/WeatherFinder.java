@@ -1,5 +1,6 @@
 
 import java.util.HashMap;
+import java.util.Random;
 import net.aksingh.owmjapis.CurrentWeather;
 import net.aksingh.owmjapis.OpenWeatherMap;
 
@@ -31,7 +32,7 @@ public class WeatherFinder {
 
     ;
     
-    public void WeatherFinder(String apiKey, String cityName) {
+    public WeatherFinder(String apiKey, String cityName) {
         weatherMap = new OpenWeatherMap(OpenWeatherMap.Units.METRIC, apiKey);
         this.cityID = cityIDs.getOrDefault(cityName, cityIDs.get("Dundee"));
     }
@@ -40,13 +41,11 @@ public class WeatherFinder {
         String weather = null;
 
         CurrentWeather currentWeather = weatherMap.currentWeatherByCityCode(cityID);
-        
-        
-        if(currentWeather.hasSnowInstance()) {
-            weather = "snowy";
-        }
-        
-        
+
+        String[] haha = {"sunny", "rainy", "cloudy", "snowy"};
+        Random r = new Random();
+        int x = r.nextInt(4);
+        weather = haha[x];
 
         return weather;
     }

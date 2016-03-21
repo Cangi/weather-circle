@@ -1,18 +1,26 @@
-/*#include <Servo.h>
+#include <Servo.h>
+#include <Stepper.h>
+
 Servo servo; // Define our Servo
 int poz;
 boolean goRight = false;
+const int stepsPerRevolution = 32;  // change this to fit the number of steps per revolution
+
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);
+Stepper myStepper1(stepsPerRevolution, 4, 5, 6, 7);
 
 void setup()
 {
-  servo.attach(2); // servo on digital pin 10
-  reposition();
+  myStepper.setSpeed(700);
+  myStepper1.setSpeed(700);
+  //servo.attach(2); // servo on digital pin 10
+  //reposition();
 }
 
 void reposition() {
   poz = servo.read();
-  while(poz > 0) {
-    poz-=5;
+  while (poz > 0) {
+    poz -= 5;
     servo.write(poz);
     delay(150);
   }
@@ -20,61 +28,46 @@ void reposition() {
 
 void loop()
 {
-  if(poz < 0) { 
+  if (poz < 0) {
     goRight = true;
-    servo.detach();
-    delay(3000);
-    servo.attach(2);
-    }
-    
-  if(poz > 180) {
+  }
+
+  if (poz > 180) {
     goRight = false;
-    servo.detach();
-    delay(3000);
-    servo.attach(2);
   }
-  
-  if(!goRight) {
-    poz-=1;
+
+  if (!goRight) {
+    poz -= 10;
     servo.write(poz);
   }
-  
+
+
   else {
-    poz+=1;
+    poz += 10;
     servo.write(poz);
   }
-  
-   delay(35);
-}*/
+  delay(35);
 
-
-
-
-
-#include <Stepper.h>
-
-const int stepsPerRevolution = 32;  // change this to fit the number of steps per revolution
-// for your motor
-
-// initialize the stepper library on pins 8 through 11:
-Stepper myStepper(stepsPerRevolution, 4, 5, 6, 7);
-
-void setup() {
-  // set the speed at 60 rpm:
-  myStepper.setSpeed(700);
-  // initialize the serial port:
-  Serial.begin(9600);
-}
-
-void loop() {
   // step one revolution  in one direction:
   Serial.println("clockwise");
-  myStepper.step(stepsPerRevolution*32);
-  delay(500);
+  myStepper1.step(stepsPerRevolution * 32);
 
   // step one revolution in the other direction:
   Serial.println("counterclockwise");
-  myStepper.step(-stepsPerRevolution*32);
-  delay(500);
+  myStepper1.step(-stepsPerRevolution * 32);
+
+
+
+  // step one revolution  in one direction:
+  Serial.println("clockwise");
+  myStepper.step(stepsPerRevolution * 32);
+
+  // step one revolution in the other direction:
+  Serial.println("counterclockwise");
+  myStepper.step(-stepsPerRevolution * 32);
+
 }
+
+
+
 

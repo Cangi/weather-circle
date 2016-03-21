@@ -1,4 +1,10 @@
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import processing.core.PApplet;
 import processing.serial.Serial;
 import twitter4j.Status;
@@ -18,7 +24,7 @@ public class Weather extends PApplet {
 
     private void initSerialConnection() {
 
-        String serialPortName = "";
+        String serialPortName = "COM5";
         int baud = 9600;
 
         try {
@@ -39,11 +45,40 @@ public class Weather extends PApplet {
         twitter = twitterFactory.getInstance();
     }
 
+    private String getLastCityArrow() {
+        String position = null;
+        BufferedReader bufferedReader = createReader("position.txt");
+        try {
+            position = bufferedReader.readLine().trim();
+            return position;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private void setLastCityArrow(String position) {
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream("position.txt"));
+            printWriter.println(position);
+            printWriter.flush();
+            printWriter.close();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Override
     public void setup() {
         keys = loadStrings("lib/secret.txt");
         initSerialConnection();
-        //configureTweeter();
+
     }
 
     @Override
@@ -53,6 +88,39 @@ public class Weather extends PApplet {
 
     @Override
     public void draw() {
+        if (serialPort.available() > 0) {
+            String serialLine = serialPort.readStringUntil('\n');
+
+            if (serialLine != null) {
+                serialLine = serialLine.trim();
+                if (serialLine.equals("needArrow")) {
+                    if (new File("position.txt").exists()) {
+                        String arrow = getLastCityArrow();
+                        System.out.println(arrow);
+                        serialPort.write(arrow);
+                    }
+                }
+
+                if (serialLine.length() > "cityArrow".length()) {
+                    if ("cityArrow".equals(serialLine.substring(0, "cityArrow".length()))) {
+                        setLastCityArrow(serialLine.split(" ")[1].trim());
+                    }
+                }
+
+                if (serialLine.length() > "selected".length()) {
+                    if ("selected".equals(serialLine.substring(0, "selected".length()))) {
+
+                        String cityName = serialLine.split(" ")[1].trim();
+                        System.out.println(cityName);
+                        String weather = getWeather(cityName);
+                        sendWeather(weather);
+                    }
+                }
+
+                System.out.println(serialLine);
+            }
+
+        }
     }
 
     private void tweet(String newStatus) {
@@ -61,6 +129,19 @@ public class Weather extends PApplet {
             System.out.println("The following was Tweeted:\n" + "\"" + newStatus + "\"");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private String getWeather(String cityName) {
+        WeatherFinder weatherFinder = new WeatherFinder(keys[4], cityName);
+        return weatherFinder.findWeather();
+    }
+
+    private void sendWeather(String weather) {
+        if (weather != null) {
+            serialPort.write(weather);
+        } else {
+            System.err.println("Awch");
         }
     }
 }
