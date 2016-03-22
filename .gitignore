@@ -9,9 +9,3 @@ twitter4j/
 
 
 *.db
-
-/Test/nbproject/private
-/Test/build/
-/Test/dist/
-/Test/build.xml
-/Test/manifest.mf
