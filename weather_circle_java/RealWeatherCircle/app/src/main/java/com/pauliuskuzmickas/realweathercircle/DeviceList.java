@@ -4,10 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,9 +35,7 @@ public class DeviceList extends AppCompatActivity {
         myBluetooth = BluetoothAdapter.getDefaultAdapter();
         if(myBluetooth == null)
         {
-            //Show a mensag. that thedevice has no bluetooth adapter
             Toast.makeText(getApplicationContext(), "Bluetooth Device Not Available", Toast.LENGTH_LONG).show();
-            //finish apk
             finish();
         }
         else
@@ -49,7 +44,6 @@ public class DeviceList extends AppCompatActivity {
             { }
             else
             {
-                //Ask to the user turn the bluetooth on
                 Intent turnBTon = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(turnBTon,1);
             }
@@ -59,7 +53,7 @@ public class DeviceList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                pairedDevicesList(); //method that will be called
+                pairedDevicesList();
             }
         });
 
@@ -74,7 +68,7 @@ public class DeviceList extends AppCompatActivity {
         {
             for(BluetoothDevice bt : pairedDevices)
             {
-                list.add(bt.getName() + "\n" + bt.getAddress()); //Get the device's name and the address
+                list.add(bt.getName() + "\n" + bt.getAddress());
             }
         }
         else
@@ -84,7 +78,7 @@ public class DeviceList extends AppCompatActivity {
 
         final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, list);
         devicelist.setAdapter(adapter);
-        devicelist.setOnItemClickListener(myListClickListener); //Method called when the device from the list is clicked
+        devicelist.setOnItemClickListener(myListClickListener);
 
     }
 
@@ -93,13 +87,10 @@ public class DeviceList extends AppCompatActivity {
     {
         public void onItemClick (AdapterView av, View v, int arg2, long arg3)
         {
-            // Get the device MAC address, the last 17 chars in the View
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
-            // Make an intent to start next activity.
-            Intent i = new Intent(DeviceList.this, ledControl.class);
-            //Change the activity.
-            i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
+            Intent i = new Intent(DeviceList.this, circleControl.class);
+            i.putExtra(EXTRA_ADDRESS, address);
             startActivity(i);
         }
     };
@@ -113,12 +104,8 @@ public class DeviceList extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.pauliuskuzmickas.realweathercircle.ledControl">
+    tools:context=".circleControl">
 
 
 
-    <include layout="@layout/content_led_control" />
+    <include layout="@layout/content_circle_control" />
 
 
 
