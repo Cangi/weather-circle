@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import processing.core.PApplet;
 import processing.serial.Serial;
 import twitter4j.Status;
+import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -21,12 +22,12 @@ public class Weather extends PApplet {
     Twitter twitter;
     String[] keys;
     Serial serialPort;
+    String cityArrow;
 
     private void initSerialConnection() {
 
         String serialPortName = "COM5";
         int baud = 9600;
-
         try {
             serialPort = new Serial(this, serialPortName, baud);
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class Weather extends PApplet {
 
     private String getLastCityArrow() {
         String position = null;
-        BufferedReader bufferedReader = createReader("position.txt");
+        BufferedReader bufferedReader = createReader("lib/position.txt");
         try {
             position = bufferedReader.readLine().trim();
             return position;
@@ -65,7 +66,7 @@ public class Weather extends PApplet {
 
     private void setLastCityArrow(String position) {
         try {
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream("position.txt"));
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream("lib/position.txt"));
             printWriter.println(position);
             printWriter.flush();
             printWriter.close();
@@ -78,12 +79,11 @@ public class Weather extends PApplet {
     public void setup() {
         keys = loadStrings("lib/secret.txt");
         initSerialConnection();
-
+        configureTweeter();
     }
 
     @Override
     public void settings() {
-        size(800, 800);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Weather extends PApplet {
             if (serialLine != null) {
                 serialLine = serialLine.trim();
                 if (serialLine.equals("needArrow")) {
-                    if (new File("position.txt").exists()) {
+                    if (new File("lib/position.txt").exists()) {
                         String arrow = getLastCityArrow();
                         System.out.println(arrow);
                         serialPort.write(arrow);
@@ -103,7 +103,8 @@ public class Weather extends PApplet {
 
                 if (serialLine.length() > "cityArrow".length()) {
                     if ("cityArrow".equals(serialLine.substring(0, "cityArrow".length()))) {
-                        setLastCityArrow(serialLine.split(" ")[1].trim());
+                        cityArrow = serialLine.split(" ")[1].trim();
+                        setLastCityArrow(cityArrow);
                     }
                 }
 
@@ -112,8 +113,12 @@ public class Weather extends PApplet {
 
                         String cityName = serialLine.split(" ")[1].trim();
                         System.out.println(cityName);
-                        String weather = getWeather(cityName);
+                        WeatherFinder weatherFinder = new WeatherFinder(keys[4], cityName);
+                        String weather = weatherFinder.findWeather();
                         sendWeather(weather);
+                        String tweetMessage = weatherFinder.formatWeather();
+                        System.out.println(tweetMessage.length());
+                        tweet(tweetMessage, weather);
                     }
                 }
 
@@ -123,18 +128,15 @@ public class Weather extends PApplet {
         }
     }
 
-    private void tweet(String newStatus) {
+    private void tweet(String newStatus, String weather) {
         try {
-            Status status = twitter.updateStatus(newStatus);
+            StatusUpdate statusUpdate = new StatusUpdate(newStatus);
+            statusUpdate.setMedia(new File("lib/" + weather + ".png"));
+            Status status = twitter.updateStatus(statusUpdate);
             System.out.println("The following was Tweeted:\n" + "\"" + newStatus + "\"");
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private String getWeather(String cityName) {
-        WeatherFinder weatherFinder = new WeatherFinder(keys[4], cityName);
-        return weatherFinder.findWeather();
     }
 
     private void sendWeather(String weather) {

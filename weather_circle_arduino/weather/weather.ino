@@ -5,8 +5,8 @@
 
 
 const int stepsPerRevolution = 64 * 32;
-const int cityStepperPins[] = { 8, 9, 10, 11};
-const int weatherStepperPins[] = { 4, 5, 6, 7};
+const int cityStepperPins[] = { 2, 4, 3, 5};
+const int weatherStepperPins[] = { 6, 8, 7, 9 };
 
 Stepper cityStepper(stepsPerRevolution, cityStepperPins[0], cityStepperPins[1], cityStepperPins[2], cityStepperPins[3]);
 Stepper weatherStepper(stepsPerRevolution / 64, weatherStepperPins[0], weatherStepperPins[1], weatherStepperPins[2], weatherStepperPins[3]);
@@ -23,11 +23,16 @@ int weatherArrow = 0;
 boolean select = true;
 
 unsigned long selectStartTime = 0;
-unsigned long timeGap = 2000;
+unsigned long timeGap = 5000;
 
-Servo servo;
+/*Servo servo;
 const int servoPin = 2;
-int servoPoz;
+int servoPoz;*/
+
+const int stepper180Pins[] = {10, 12, 11, 13};
+Stepper stepper180(stepsPerRevolution / 64, stepper180Pins[0], stepper180Pins[1], stepper180Pins[2], stepper180Pins[3]);
+
+
 
 
 
@@ -57,10 +62,10 @@ void initCityCoord() {
 
 
 //WEATHER COORDINATES
-const int weatherOnDisc = 4;
+const int weatherOnDisc = 12;
 int weatherCoord[weatherOnDisc][2];
 int weatherSteps = stepsPerRevolution / weatherOnDisc;
-String weatherNames[] = {"sunny", "snowy", "rainy", "cloudy"};
+String weatherNames[] = {"sunny1", "sunny2", "sunny3", "snowy1", "snowy2", "snowy3", "rainy1", "rainy2", "rainy3", "cloudy1", "cloudy2", "cloudy3"};
 
 void initWeatherCoord() {
   weatherCoord[0][0] = 0;
@@ -81,6 +86,8 @@ void setup() {
 
   cityStepper.setSpeed(stepperSpeed);
   weatherStepper.setSpeed(700);
+  stepper180.setSpeed(600);
+
   Serial.begin(BAUD);
 
   initCityCoord();
@@ -91,14 +98,15 @@ void setup() {
   if (Serial.available() > 0) {
     int lastArrow = Serial.parseInt();
     delay(100);
-    Serial.print(lastArrow);
-    Serial.println(" cacare");
     cityArrow = lastArrow;
   }
-
-  //servo.attach(servoPin);
-  flip0();
 }
+
+
+
+
+
+
 
 
 void loop() {
@@ -108,18 +116,20 @@ void loop() {
     }
     if (checkIfSelected() == true) {
       select = false;
+      Serial.print("cityArrow ");
+      Serial.println(cityArrow);
       Serial.print("selected ");
       String cityName = checkForCity();
 
       if (!cityName.equals("no city"))
       { Serial.println(checkForCity());
-        flip180();
+        stepper180.step(stepsPerRevolution / 2 + 50);
+        delay(2000);
       }
       else {
         select = true;
       }
-      Serial.print("cityArrow ");
-      Serial.println(cityArrow);
+      
       //delay(2000);
     }
   }
@@ -130,16 +140,22 @@ void loop() {
       String weather = Serial.readString();
       Serial.println(weather);
       moveWeatherArrow(weather);
-      delay(1000);
+      delay(7000);
       weatherStepper.step(weatherArrow);
+      delay(2000);
     }
 
-    flip0();
+    stepper180.step(-stepsPerRevolution / 2 - 50);
     selectStartTime = 0;
     select = true;
   }
 
 }
+
+
+
+
+
 
 
 
@@ -166,11 +182,18 @@ void moveArrow() {
 }
 
 
+
+
+
+
+
+
+
 void moveWeatherArrow(String weather) {
   int poz;
   for (int i = 0; i < weatherOnDisc; i++) {
     if (weather.equals(weatherNames[i])) {
-      poz = i;
+      poz = weatherOnDisc - i - 1;
       break;
     }
   }
@@ -178,6 +201,12 @@ void moveWeatherArrow(String weather) {
   weatherArrow = (weatherCoord[poz][1] + weatherCoord[poz][0]) / 2;
   weatherStepper.step(-weatherArrow);
 }
+
+
+
+
+
+
 
 
 String checkForCity() {
@@ -188,23 +217,11 @@ String checkForCity() {
   return "no city";
 }
 
-void flip180() {
-  servoPoz = servo.read();
-  while (servoPoz <= 180) {
-    servoPoz += 1;
-    servo.write(servoPoz);
-    delay(50);
-  }
-}
 
-void flip0() {
-  servoPoz = servo.read();
-  while (servoPoz >= 0) {
-    servoPoz -= 1;
-    servo.write(servoPoz);
-    delay(50);
-  }
-}
+
+
+
+
 
 boolean checkIfSelected() {
   if (selectStartTime == 0) return false;
