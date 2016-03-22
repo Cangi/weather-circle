@@ -1,4 +1,4 @@
 # crew17
-arduino stuff
-
-we should complete stuff in here at some point
+"Weather"  folder contains our Java application and its dependancies. 
+"RealWeatherCircle" folder contains our Java ANDROID project
+"WeatherCircle.apk" is the android application file
